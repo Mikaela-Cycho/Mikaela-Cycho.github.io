@@ -1,0 +1,285 @@
+/* ============================================= */
+/* CSS VARIABLES — restyle the whole site here   */
+/* ============================================= */
+:root {
+  /* Panel colors — one per section */
+  --color-1: #2d3e50;
+  --color-2: #c0392b;
+  --color-3: #27ae60;
+  --color-4: #8e44ad;
+  --color-5: #d68910;
+
+  /* Global palette */
+  --bg:           #111418;
+  --text:         #f5f5f5;
+  --text-muted:   rgba(245, 245, 245, 0.75);
+
+  /* Timing */
+  --intro-duration:  900ms;
+  --expand-duration: 600ms;
+  --ease:            cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Layout */
+  --gap: 0px;
+}
+
+/* ============================================= */
+/* RESET / BASE                                  */
+/* ============================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Microsoft YaHei", Roboto, Helvetica, Arial, sans-serif;
+  overflow: hidden; /* lock scroll during intro; main controls its own */
+}
+
+/* ============================================= */
+/* INTRO SCREEN                                  */
+/* ============================================= */
+.intro {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  z-index: 100;
+  transition: opacity var(--intro-duration) var(--ease),
+              transform var(--intro-duration) var(--ease);
+}
+
+.intro__text {
+  font-size: clamp(1.5rem, 6vw, 3.5rem);
+  font-weight: 600;
+  text-align: center;
+  padding: 0 1rem;
+
+  /* start state: below + invisible */
+  opacity: 0;
+  transform: translateY(60px);
+  transition: opacity var(--intro-duration) var(--ease),
+              transform var(--intro-duration) var(--ease);
+}
+
+/* slide up into center */
+.intro__text.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* fade out upward */
+.intro__text.is-leaving {
+  opacity: 0;
+  transform: translateY(-60px);
+}
+
+/* whole intro layer leaving */
+.intro.is-hidden {
+  opacity: 0;
+  transform: translateY(-40px);
+  pointer-events: none;
+}
+
+/* ============================================= */
+/* MAIN PAGE                                     */
+/* ============================================= */
+.main {
+  position: relative;
+  height: 100%;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity var(--intro-duration) var(--ease),
+              transform var(--intro-duration) var(--ease);
+}
+
+.main.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================= */
+/* GRID OF PANELS                                */
+/* ============================================= */
+.grid {
+  display: grid;
+  height: 100%;
+  gap: var(--gap);
+  grid-template-columns: repeat(5, 1fr);
+}
+
+/* ============================================= */
+/* PANEL                                         */
+/* ============================================= */
+.panel {
+  position: relative;
+  background: var(--panel-color);
+  overflow: hidden;
+  cursor: pointer;
+  transition: filter 300ms var(--ease);
+}
+
+/* Only brighten collapsed panels. Applying `filter` to an OPEN panel
+   would make it the containing block for its position:fixed overlay,
+   causing a shrink/expand flicker loop. */
+.panel:not(.is-open):hover {
+  filter: brightness(1.12);
+}
+
+/* The collapsed "face" of a panel */
+.panel__face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: 1rem;
+  text-align: center;
+  transition: opacity 300ms var(--ease);
+}
+
+.panel__title {
+  font-size: clamp(1rem, 2vw, 1.75rem);
+  font-weight: 600;
+  writing-mode: vertical-rl;       /* vertical labels look nice in tall columns */
+  text-orientation: mixed;
+  letter-spacing: 0.15em;
+}
+
+.panel__btn {
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+  padding: 0.5rem 1.25rem;
+  cursor: pointer;
+  transition: background 200ms var(--ease);
+}
+
+.panel__btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* ============================================= */
+/* EXPANDED PANEL                                */
+/* A clicked panel grows to a fixed full-screen  */
+/* overlay; its background color "takes over".   */
+/* ============================================= */
+.panel__content {
+  position: fixed;
+  inset: 0;
+  background: var(--panel-color);
+  z-index: 50;
+  opacity: 0;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.5rem, 5vw, 4rem);
+  /* clip from the panel's own position, then sweep open */
+  clip-path: inset(0 0 0 0);
+  transition: opacity var(--expand-duration) var(--ease);
+}
+
+.panel.is-open {
+  /* keep the open panel above its siblings while animating */
+  z-index: 60;
+}
+
+.panel.is-open .panel__content {
+  opacity: 1;
+  pointer-events: auto;
+  animation: panel-takeover var(--expand-duration) var(--ease) forwards;
+}
+
+.panel.is-open .panel__face {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* color sweep that fills the screen */
+@keyframes panel-takeover {
+  from { clip-path: inset(45% 45% 45% 45% round 12px); }
+  to   { clip-path: inset(0 0 0 0 round 0); }
+}
+
+.panel__detail {
+  margin-top: 1.5rem;
+  max-width: 900px;
+  overflow-y: auto;
+}
+
+.panel__detail h2 {
+  font-size: clamp(1.5rem, 5vw, 3rem);
+  margin-bottom: 1rem;
+}
+
+.panel__detail p {
+  color: var(--text-muted);
+  line-height: 1.6;
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+}
+
+/* ============================================= */
+/* BACK BUTTON                                   */
+/* ============================================= */
+.back-btn {
+  align-self: flex-start;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--text);
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  padding: 0.5rem 1.25rem;
+  cursor: pointer;
+  transition: background 200ms var(--ease);
+}
+
+.back-btn:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* ============================================= */
+/* RESPONSIVE — stack panels vertically on small */
+/* screens                                       */
+/* ============================================= */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 1fr;
+  }
+
+  .panel__face {
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+  .panel__title {
+    writing-mode: horizontal-tb;   /* horizontal labels stack better */
+  }
+}
+
+/* ============================================= */
+/* ACCESSIBILITY — respect reduced motion        */
+/* ============================================= */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  .panel.is-open .panel__content {
+    animation: none !important;
+    transition-duration: 1ms !important;
+  }
+}
