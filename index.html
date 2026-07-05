@@ -9,6 +9,13 @@
 <body>
 
   <!-- ============================================= -->
+  <!-- FIXED BACKGROUND IMAGE                        -->
+  <!-- Stays put behind everything, never scrolls.   -->
+  <!-- Set the image in styles.css: --bg-image       -->
+  <!-- ============================================= -->
+  <div class="bg" aria-hidden="true"></div>
+
+  <!-- ============================================= -->
   <!-- INTRO ANIMATION SCREEN                        -->
   <!-- ============================================= -->
   <div id="intro" class="intro">
@@ -19,92 +26,102 @@
   <!-- ============================================= -->
   <!-- MAIN PAGE                                     -->
   <!-- ============================================= -->
-  <main id="main" class="main" aria-hidden="true">
+  <div id="main" class="main" aria-hidden="true">
 
-    <div class="grid">
+    <!-- ===== CENTERED TOP NAV ===== -->
+    <nav class="nav">
+      <button class="nav__tab is-active" type="button" data-target="home">首页</button>
+      <span class="nav__sep">|</span>
+      <button class="nav__tab" type="button" data-target="works">作品</button>
+      <span class="nav__sep">|</span>
+      <button class="nav__tab" type="button" data-target="art">艺术</button>
+      <span class="nav__sep">|</span>
+      <button class="nav__tab" type="button" data-target="contact">联系我</button>
+    </nav>
 
-      <!-- ===== SECTION 1 ===== -->
-      <section class="panel" data-panel="1" style="--panel-color: var(--color-1);">
-        <div class="panel__face">
-          <h2 class="panel__title">Section 1</h2>
-          <button class="panel__btn" type="button">Open</button>
-        </div>
-        <div class="panel__content">
-          <button class="back-btn" type="button" aria-label="Back">← Back</button>
-          <div class="panel__detail">
-            <h2>Section 1</h2>
-            <!-- ADD SECTION 1 CONTENT HERE -->
-            <p>Placeholder content for section 1.</p>
+    <!-- ===== SLIDING SECTIONS ===== -->
+    <div class="sections">
+
+      <!-- ---------- 首页 / HOME ---------- -->
+      <!-- Home is a vertically scrollable page; stack more .home-block's below. -->
+      <section class="section is-active" data-section="home">
+
+        <!-- ===== BLOCK 1: About me (≈ full screen) ===== -->
+        <!-- This block has its OWN background that scrolls with the page. -->
+        <div class="home-block home-block--about">
+
+          <!-- Decorative ball with TWO slow motions:
+               • wrapper ORBITS (revolves) around the anchor point
+               • image SELF-ROTATES on its own axis
+               Tune: --ball-top / --ball-left = anchor point,
+                     --orbit-radius = how wide the orbit circle is,
+                     --ball-size = ball diameter. -->
+          <div class="ball-orbit"
+               style="--ball-top: 33%; --ball-left: 35%; --orbit-radius: 80px;">
+            <img src="Page_pic/small_ball.png"
+                 class="ball-core"
+                 style="--ball-size: 520px;"
+                 alt="" aria-hidden="true" />
           </div>
+
+          <div class="home-block__content about">
+            <h2>关于我</h2>
+
+            <!-- Row under the heading: profile picture (left) + bio (right) -->
+            <div class="about__row">
+
+              <!-- REPLACE / RESIZE YOUR PROFILE PICTURE HERE.
+                   Adjust size via --pfp-size (or just edit the img). -->
+              <img src="Page_pic/my_pfp_avatar.png"
+                   class="about__pfp"
+                   style="--pfp-size: 150px;"
+                   alt="Mikaela 的头像" />
+
+              <div class="about__bio">
+                <!-- ADD YOUR BIO / 个人简介 HERE (left-aligned) -->
+                <p>Placeholder — 在这里写你的个人简介。</p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- ADD MORE HOME BLOCKS BELOW (copy the .home-block above) -->
+
+      </section>
+
+      <!-- ---------- 作品 / WORKS ---------- -->
+      <section class="section" data-section="works">
+        <div class="section__inner">
+          <!-- ADD WORKS HERE (each project = one .circle) -->
+          <div class="circle" style="--circle-size: 180px;"><span>作品 1</span></div>
+          <div class="circle" style="--circle-size: 180px;"><span>作品 2</span></div>
+          <div class="circle" style="--circle-size: 180px;"><span>作品 3</span></div>
         </div>
       </section>
 
-      <!-- ===== SECTION 2 ===== -->
-      <section class="panel" data-panel="2" style="--panel-color: var(--color-2);">
-        <div class="panel__face">
-          <h2 class="panel__title">Section 2</h2>
-          <button class="panel__btn" type="button">Open</button>
-        </div>
-        <div class="panel__content">
-          <button class="back-btn" type="button" aria-label="Back">← Back</button>
-          <div class="panel__detail">
-            <h2>Section 2</h2>
-            <!-- ADD SECTION 2 CONTENT HERE -->
-            <p>Placeholder content for section 2.</p>
-          </div>
+      <!-- ---------- 艺术 / ART ---------- -->
+      <section class="section" data-section="art">
+        <div class="section__inner">
+          <!-- ADD ART PIECES HERE -->
+          <div class="circle" style="--circle-size: 200px;"><span>艺术 1</span></div>
+          <div class="circle" style="--circle-size: 140px;"><span>艺术 2</span></div>
+          <div class="circle" style="--circle-size: 170px;"><span>艺术 3</span></div>
         </div>
       </section>
 
-      <!-- ===== SECTION 3 ===== -->
-      <section class="panel" data-panel="3" style="--panel-color: var(--color-3);">
-        <div class="panel__face">
-          <h2 class="panel__title">Section 3</h2>
-          <button class="panel__btn" type="button">Open</button>
-        </div>
-        <div class="panel__content">
-          <button class="back-btn" type="button" aria-label="Back">← Back</button>
-          <div class="panel__detail">
-            <h2>Section 3</h2>
-            <!-- ADD SECTION 3 CONTENT HERE -->
-            <p>Placeholder content for section 3.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- ===== SECTION 4 ===== -->
-      <section class="panel" data-panel="4" style="--panel-color: var(--color-4);">
-        <div class="panel__face">
-          <h2 class="panel__title">Section 4</h2>
-          <button class="panel__btn" type="button">Open</button>
-        </div>
-        <div class="panel__content">
-          <button class="back-btn" type="button" aria-label="Back">← Back</button>
-          <div class="panel__detail">
-            <h2>Section 4</h2>
-            <!-- ADD SECTION 4 CONTENT HERE -->
-            <p>Placeholder content for section 4.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- ===== SECTION 5 ===== -->
-      <section class="panel" data-panel="5" style="--panel-color: var(--color-5);">
-        <div class="panel__face">
-          <h2 class="panel__title">Section 5</h2>
-          <button class="panel__btn" type="button">Open</button>
-        </div>
-        <div class="panel__content">
-          <button class="back-btn" type="button" aria-label="Back">← Back</button>
-          <div class="panel__detail">
-            <h2>Section 5</h2>
-            <!-- ADD SECTION 5 CONTENT HERE -->
-            <p>Placeholder content for section 5.</p>
-          </div>
+      <!-- ---------- 联系我 / CONTACT ---------- -->
+      <section class="section" data-section="contact">
+        <div class="section__inner">
+          <!-- ADD CONTACT INFO / LINKS HERE -->
+          <div class="circle" style="--circle-size: 160px;"><span>Email</span></div>
+          <div class="circle" style="--circle-size: 160px;"><span>微信</span></div>
+          <div class="circle" style="--circle-size: 160px;"><span>GitHub</span></div>
         </div>
       </section>
 
     </div>
-  </main>
+  </div>
 
   <script src="script.js"></script>
 </body>

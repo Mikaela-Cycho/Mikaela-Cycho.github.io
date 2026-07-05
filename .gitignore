@@ -10,3 +10,7 @@ npm-debug.log*
 
 # Dependencies (in case tooling is added later)
 node_modules/
+
+# Full-resolution cursor source art (only the downscaled *_sm.png are used)
+Page_pic/cursor_normal.png
+Page_pic/cursor_click.png

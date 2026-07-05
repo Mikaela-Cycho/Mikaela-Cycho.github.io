@@ -2,25 +2,45 @@
 /* CSS VARIABLES — restyle the whole site here   */
 /* ============================================= */
 :root {
-  /* Panel colors — one per section */
-  --color-1: #2d3e50;
-  --color-2: #c0392b;
-  --color-3: #27ae60;
-  --color-4: #8e44ad;
-  --color-5: #d68910;
-
   /* Global palette */
-  --bg:           #111418;
-  --text:         #f5f5f5;
-  --text-muted:   rgba(245, 245, 245, 0.75);
+  --bg:          #111418;
+  --text:        #f5f5f5;
+  --text-muted:  rgba(245, 245, 245, 0.6);
+  --accent:      #d68910;
+
+  /* ---- FIXED BACKGROUND IMAGE ------------------------------- */
+  /* Path is relative to THIS css file. Note the folder + uppercase .PNG */
+  --bg-image: url("Page_pic/background_name.PNG");   /* <-- YOUR BACKGROUND IMAGE */
+
+  /* Circle elements */
+  --circle-bg:     rgba(255, 255, 255, 0.08);
+  --circle-border: rgba(255, 255, 255, 0.25);
+  --circle-hover-scale: 1.08;
+
+  /* Top nav bar (frosted glass) */
+  --nav-height: 68px;
+  --nav-bg:     rgba(255, 255, 255, 0.06); /* translucent — background shows through, blurred */
+  --nav-blur:   14px;                       /* strength of the frosted blur */
+  --nav-border: rgba(255, 255, 255, 0.12);
 
   /* Timing */
-  --intro-duration:  900ms;
-  --expand-duration: 600ms;
-  --ease:            cubic-bezier(0.65, 0, 0.35, 1);
+  --intro-duration:      800ms;
+  --transition-duration: 700ms;  /* section slide */
+  --ease:                cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-out:            cubic-bezier(0.16, 1, 0.3, 1); /* fast start -> smooth stop */
 
-  /* Layout */
-  --gap: 0px;
+  /* Decorative ball — two independent slow motions */
+  --ball-spin-duration:  40s;   /* self-rotation (spin on own axis); higher = slower */
+  --ball-orbit-duration: 60s;   /* orbit (revolve around anchor); higher = slower */
+
+  /* ---- CUSTOM CURSORS ---------------------------------------- */
+  /* Two 48px cursors. "1 1" is the hotspot (x y) — the active point that
+     actually clicks — set to the triangle's top-left tip so what you point
+     WITH is what selects. The ", auto" / ", pointer" is a fallback if the
+     PNG fails to load. Cursor images MUST be small (<128px) or browsers
+     ignore them — these are downscaled copies of your originals. */
+  --cursor-normal: url("Page_pic/cursor_normal_sm.png") 1 1, auto;
+  --cursor-click:  url("Page_pic/cursor_click_sm.png") 1 1, pointer;
 }
 
 /* ============================================= */
@@ -41,7 +61,27 @@ body {
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
     "Microsoft YaHei", Roboto, Helvetica, Arial, sans-serif;
-  overflow: hidden; /* lock scroll during intro; main controls its own */
+  overflow: hidden;
+
+  /* Custom cursor replaces the default across the whole page */
+  cursor: var(--cursor-normal);
+}
+
+/* ============================================= */
+/* FIXED BACKGROUND LAYER                        */
+/* Sits behind everything; never moves on scroll */
+/* or when switching sections.                   */
+/* ============================================= */
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;                     /* behind all page content */
+  background-color: var(--bg);     /* fallback / shows through transparent PNGs */
+  background-image: var(--bg-image);
+  background-size: cover;          /* fill the screen; try "contain" to letterbox */
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
 }
 
 /* ============================================= */
@@ -64,27 +104,15 @@ body {
   font-weight: 600;
   text-align: center;
   padding: 0 1rem;
-
-  /* start state: below + invisible */
   opacity: 0;
   transform: translateY(60px);
   transition: opacity var(--intro-duration) var(--ease),
               transform var(--intro-duration) var(--ease);
 }
 
-/* slide up into center */
-.intro__text.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+.intro__text.is-visible { opacity: 1; transform: translateY(0); }
+.intro__text.is-leaving { opacity: 0; transform: translateY(-60px); }
 
-/* fade out upward */
-.intro__text.is-leaving {
-  opacity: 0;
-  transform: translateY(-60px);
-}
-
-/* whole intro layer leaving */
 .intro.is-hidden {
   opacity: 0;
   transform: translateY(-40px);
@@ -103,183 +131,274 @@ body {
               transform var(--intro-duration) var(--ease);
 }
 
-.main.is-visible {
-  opacity: 1;
-  transform: translateY(0);
+.main.is-visible { opacity: 1; transform: translateY(0); }
+
+/* ============================================= */
+/* TOP NAV — full-width frosted bar, always on top */
+/* ============================================= */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-height);
+  z-index: 30;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;   /* tabs stay centered within the full-width bar */
+  gap: 0.75rem;
+  padding: 0 1rem;
+
+  /* Frosted glass: translucent fill + blur of whatever scrolls behind it.
+     Because it's translucent, it never needs to change color per section. */
+  background: var(--nav-bg);
+  backdrop-filter: blur(var(--nav-blur));
+  -webkit-backdrop-filter: blur(var(--nav-blur));
+  border-bottom: 1px solid var(--nav-border);
+}
+
+.nav__tab {
+  font: inherit;
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  font-weight: 500;
+  color: var(--text-muted);
+  background: none;
+  border: none;              /* text-only, no borders/backgrounds */
+  padding: 0.25rem 0.4rem;
+  cursor: var(--cursor-click);
+  transition: color 250ms var(--ease);
+  letter-spacing: 0.05em;
+}
+
+.nav__tab:hover,
+.nav__tab.is-active {
+  color: var(--text);
+}
+
+.nav__sep {
+  color: var(--text-muted);
+  opacity: 0.5;
+  user-select: none;
 }
 
 /* ============================================= */
-/* GRID OF PANELS                                */
+/* SLIDING SECTIONS                              */
 /* ============================================= */
-.grid {
-  display: grid;
-  height: 100%;
-  gap: var(--gap);
-  grid-template-columns: repeat(5, 1fr);
-}
-
-/* ============================================= */
-/* PANEL                                         */
-/* ============================================= */
-.panel {
-  position: relative;
-  background: var(--panel-color);
-  overflow: hidden;
-  cursor: pointer;
-  transition: filter 300ms var(--ease);
-}
-
-/* Only brighten collapsed panels. Applying `filter` to an OPEN panel
-   would make it the containing block for its position:fixed overlay,
-   causing a shrink/expand flicker loop. */
-.panel:not(.is-open):hover {
-  filter: brightness(1.12);
-}
-
-/* The collapsed "face" of a panel */
-.panel__face {
+.sections {
   position: absolute;
   inset: 0;
+  overflow: hidden;   /* clip sections parked off-screen */
+}
+
+.section {
+  position: absolute;
+  inset: 0;
+
+  /* scroll long content vertically; it passes BEHIND the frosted nav */
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* parked off-screen to the RIGHT by default */
+  transform: translateX(100%);
+  transition: transform var(--transition-duration) var(--ease-out);
+}
+
+/* the visible section */
+.section.is-active { transform: translateX(0); }
+
+/* the section leaving to the LEFT */
+.section.is-exiting { transform: translateX(-100%); }
+
+/* used momentarily to reset a section's position without animating */
+.section.no-anim { transition: none; }
+
+/* Sections are transparent — the fixed background image shows through
+   on every tab. (Add a per-section background here later if you ever
+   want one; leave it unset to keep the image visible.) */
+.section { background: transparent; }
+
+.section__inner {
+  min-height: 100%;   /* fill the viewport so sparse content still centers */
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 1.25rem;
-  padding: 1rem;
-  text-align: center;
-  transition: opacity 300ms var(--ease);
-}
-
-.panel__title {
-  font-size: clamp(1rem, 2vw, 1.75rem);
-  font-weight: 600;
-  writing-mode: vertical-rl;       /* vertical labels look nice in tall columns */
-  text-orientation: mixed;
-  letter-spacing: 0.15em;
-}
-
-.panel__btn {
-  font: inherit;
-  font-size: 0.85rem;
-  color: var(--text);
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 999px;
-  padding: 0.5rem 1.25rem;
-  cursor: pointer;
-  transition: background 200ms var(--ease);
-}
-
-.panel__btn:hover {
-  background: rgba(255, 255, 255, 0.3);
+  gap: clamp(1.5rem, 5vw, 4rem);
+  /* top padding clears the fixed nav; content scrolls under it when taller */
+  padding: calc(var(--nav-height) + 3rem) 2rem 3rem;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
 /* ============================================= */
-/* EXPANDED PANEL                                */
-/* A clicked panel grows to a fixed full-screen  */
-/* overlay; its background color "takes over".   */
+/* HOME BLOCKS — stacked, scroll normally         */
 /* ============================================= */
-.panel__content {
-  position: fixed;
-  inset: 0;
-  background: var(--panel-color);
-  z-index: 50;
-  opacity: 0;
-  pointer-events: none;
+.home-block {
+  position: relative;
+  min-height: 100vh;          /* ≈ one screen tall; blocks stack below */
   display: flex;
-  flex-direction: column;
-  padding: clamp(1.5rem, 5vw, 4rem);
-  /* clip from the panel's own position, then sweep open */
-  clip-path: inset(0 0 0 0);
-  transition: opacity var(--expand-duration) var(--ease);
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--nav-height) + 3rem) 2rem 3rem;
+  overflow: hidden;           /* keep the spinning ball from spilling out */
 }
 
-.panel.is-open {
-  /* keep the open panel above its siblings while animating */
-  z-index: 60;
+/* This block's own background image — scrolls WITH the page (not fixed). */
+.home-block--about {
+  background-image: url("Page_pic/main_page_balls.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-.panel.is-open .panel__content {
-  opacity: 1;
-  pointer-events: auto;
-  animation: panel-takeover var(--expand-duration) var(--ease) forwards;
+.home-block__content {
+  position: relative;
+  z-index: 1;                 /* sit above the spinning ball */
+  max-width: 800px;
+  text-align: left;
 }
 
-.panel.is-open .panel__face {
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* color sweep that fills the screen */
-@keyframes panel-takeover {
-  from { clip-path: inset(45% 45% 45% 45% round 12px); }
-  to   { clip-path: inset(0 0 0 0 round 0); }
-}
-
-.panel__detail {
-  margin-top: 1.5rem;
-  max-width: 900px;
-  overflow-y: auto;
-}
-
-.panel__detail h2 {
-  font-size: clamp(1.5rem, 5vw, 3rem);
+.home-block__content h2 {
+  font-size: clamp(1.75rem, 5vw, 3rem);
   margin-bottom: 1rem;
 }
 
-.panel__detail p {
+.home-block__content p {
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  line-height: 1.7;
   color: var(--text-muted);
-  line-height: 1.6;
-  font-size: clamp(1rem, 2.5vw, 1.25rem);
+}
+
+/* ---- ABOUT block: pinned to the top-left of the home block ---- */
+.home-block--about {
+  align-items: flex-start;    /* top */
+  justify-content: flex-start; /* left */
+}
+
+.about {
+  max-width: 900px;           /* keep the bio from stretching too wide */
+  width: 100%;
+  padding-left: 55px;
+}
+
+.about > h2 {
+  margin-bottom: 1.5rem;
+}
+
+/* pfp (left) + bio (right) */
+.about__row {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  flex-wrap: wrap;            /* stack on very narrow screens */
+}
+
+.about__pfp {
+  width: var(--pfp-size, 150px);
+  height: auto;
+  flex-shrink: 0;
+  border-radius: 0;        /* set to 50% for a circular avatar */
+}
+
+.about__bio {
+  flex: 1;
+  min-width: 240px;
+  text-align: left;
 }
 
 /* ============================================= */
-/* BACK BUTTON                                   */
+/* SPINNING DECORATIVE BALL                       */
+/* Two motions: the wrapper ORBITS around the      */
+/* anchor point; the image SELF-ROTATES on its axis. */
+/* Tune via inline vars: --ball-top / --ball-left   */
+/* (anchor), --orbit-radius (orbit width),          */
+/* --ball-size (diameter).                          */
 /* ============================================= */
-.back-btn {
-  align-self: flex-start;
-  font: inherit;
-  font-size: 1rem;
+
+/* Orbit layer: a 0×0 point at the anchor that slowly revolves. */
+.ball-orbit {
+  position: absolute;
+  top: var(--ball-top, 40%);
+  left: var(--ball-left, 25%);
+  width: 0;
+  height: 0;
+  z-index: 0;
+  pointer-events: none;
+  animation: ball-orbit var(--ball-orbit-duration) linear infinite;
+}
+
+/* The ball itself: offset from the orbit centre by --orbit-radius so it
+   traces a circle, while spinning on its own centre. */
+.ball-core {
+  position: absolute;
+  top: 0;
+  left: var(--orbit-radius, 80px);
+  width: var(--ball-size, 520px);
+  height: auto;
+  transform: translate(-50%, -50%);   /* centre the ball on the offset point */
+  transform-origin: center center;
+  animation: ball-spin var(--ball-spin-duration) linear infinite;
+}
+
+@keyframes ball-orbit {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* keep the centring translate while spinning on its own axis.
+   Negative angle = counter-clockwise self-rotation. */
+@keyframes ball-spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* ============================================= */
+/* CIRCULAR CLICKABLE ELEMENTS                   */
+/* ============================================= */
+.circle {
+  --circle-size: 180px;   /* overridable per-circle via inline style */
+  width: var(--circle-size);
+  height: var(--circle-size);
+  border-radius: 50%;
+  background: var(--circle-bg);
+  border: 1px solid var(--circle-border);
+  backdrop-filter: blur(2px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem;
+
+  cursor: var(--cursor-click);
+  transition: transform 300ms var(--ease-out),
+              background 300ms var(--ease);
+}
+
+.circle span {
+  font-size: clamp(0.9rem, 1.6vw, 1.15rem);
   color: var(--text);
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 999px;
-  padding: 0.5rem 1.25rem;
-  cursor: pointer;
-  transition: background 200ms var(--ease);
+  pointer-events: none;
 }
 
-.back-btn:hover {
-  background: rgba(0, 0, 0, 0.4);
+.circle:hover {
+  transform: scale(var(--circle-hover-scale));
+  background: rgba(255, 255, 255, 0.14);
 }
 
 /* ============================================= */
-/* RESPONSIVE — stack panels vertically on small */
-/* screens                                       */
+/* RESPONSIVE                                    */
 /* ============================================= */
 @media (max-width: 768px) {
-  .grid {
-    grid-template-columns: 1fr;
-    grid-auto-rows: 1fr;
-  }
-
-  .panel__face {
-    flex-direction: row;
-    gap: 1rem;
-  }
-
-  .panel__title {
-    writing-mode: horizontal-tb;   /* horizontal labels stack better */
-  }
+  .nav { top: 1.25rem; gap: 0.5rem; flex-wrap: wrap; justify-content: center; }
+  .section__inner { gap: 2rem; padding: 7rem 1.5rem 2rem; }
+  .circle { --circle-size: 140px !important; }
 }
 
 /* ============================================= */
 /* ACCESSIBILITY — respect reduced motion        */
 /* ============================================= */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  .panel.is-open .panel__content {
-    animation: none !important;
-    transition-duration: 1ms !important;
-  }
+  * { transition-duration: 1ms !important; }
 }
