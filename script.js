@@ -73,4 +73,46 @@ document.addEventListener('DOMContentLoaded', () => {
       showSection(tab.dataset.target);
     });
   });
+
+  /* ---------- Animated click cursor (APNG overlay) ---------- */
+  // The native eye cursor is used normally; this animated overlay only
+  // appears while hovering clickable elements, tip aligned to the pointer.
+  const animCursor = document.getElementById('anim-cursor');
+  if (animCursor && window.matchMedia('(pointer: fine)').matches) {
+    // Only on devices with a precise pointer (mouse/trackpad), not touch.
+    document.documentElement.classList.add('js-cursor');
+
+    const CLICKABLE = '.nav__tab, .circle';
+    // Hotspot as a fraction of the image (apex ≈ 4,1 in the 63×64 source),
+    // so it stays correct even if you resize --anim-cursor-size.
+    const HOT_FX = 4 / 63;
+    const HOT_FY = 1 / 64;
+    let hovering = false;
+
+    const place = (e) => {
+      const x = e.clientX - animCursor.offsetWidth * HOT_FX;
+      const y = e.clientY - animCursor.offsetHeight * HOT_FY;
+      animCursor.style.transform = `translate(${x}px, ${y}px)`;
+    };
+
+    document.addEventListener('pointermove', (e) => {
+      const overClickable = !!(e.target.closest && e.target.closest(CLICKABLE));
+      if (overClickable) {
+        if (!hovering) {
+          hovering = true;
+          animCursor.classList.add('is-visible');
+        }
+        place(e);
+      } else if (hovering) {
+        hovering = false;
+        animCursor.classList.remove('is-visible');
+      }
+    });
+
+    // Hide the overlay when the mouse leaves the window entirely.
+    document.addEventListener('mouseleave', () => {
+      hovering = false;
+      animCursor.classList.remove('is-visible');
+    });
+  }
 });

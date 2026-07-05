@@ -85,6 +85,33 @@ body {
 }
 
 /* ============================================= */
+/* ANIMATED CLICK CURSOR (JS-driven overlay)     */
+/* CSS cursors can't animate APNG/GIF, so this    */
+/* <img> follows the mouse and shows only while    */
+/* hovering clickable elements.                    */
+/* ============================================= */
+.anim-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--anim-cursor-size, 48px);  /* tweak size here (height auto) */
+  height: auto;
+  z-index: 9999;
+  pointer-events: none;   /* never block clicks */
+  opacity: 0;             /* hidden until over a clickable */
+  will-change: transform;
+}
+
+.anim-cursor.is-visible { opacity: 1; }
+
+/* When JS is running, hide the native cursor on clickables so the animated
+   overlay takes over. Without JS, the static --cursor-click still shows. */
+.js-cursor .nav__tab,
+.js-cursor .circle {
+  cursor: none;
+}
+
+/* ============================================= */
 /* INTRO SCREEN                                  */
 /* ============================================= */
 .intro {
