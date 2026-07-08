@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Only on devices with a precise pointer (mouse/trackpad), not touch.
     document.documentElement.classList.add('js-cursor');
 
-    const CLICKABLE = '.nav__tab, .circle';
+    const CLICKABLE = '.nav__tab, .circle, .contact-btn, .contact-email';
     // Hotspot as a fraction of the image (apex ≈ 4,1 in the 63×64 source),
     // so it stays correct even if you resize --anim-cursor-size.
     const HOT_FX = 4 / 63;
@@ -113,6 +113,49 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('mouseleave', () => {
       hovering = false;
       animCursor.classList.remove('is-visible');
+    });
+  }
+
+  /* ---------- Contact: reveal emails + copy to clipboard ---------- */
+  const emailBtn = document.querySelector('.contact-btn--email');
+  if (emailBtn) {
+    // Toggle the popover (but not when clicking an address inside it).
+    emailBtn.addEventListener('click', (e) => {
+      if (e.target.closest('.contact-email')) return;
+      emailBtn.classList.toggle('is-open');
+    });
+
+    // Copy an address to the clipboard, with brief visual feedback.
+    emailBtn.querySelectorAll('.contact-email').forEach((btn) => {
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const email = btn.dataset.email;
+        try {
+          await navigator.clipboard.writeText(email);
+        } catch (_) {
+          // Fallback for non-secure contexts (e.g. opening via file://).
+          const ta = document.createElement('textarea');
+          ta.value = email;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand('copy'); } catch (_) {}
+          ta.remove();
+        }
+        const original = btn.textContent;
+        btn.classList.add('copied');
+        btn.textContent = '已复制 ✓';
+        setTimeout(() => {
+          btn.textContent = original;
+          btn.classList.remove('copied');
+        }, 1200);
+      });
+    });
+
+    // Close the popover when clicking anywhere outside the Email button.
+    document.addEventListener('click', (e) => {
+      if (!emailBtn.contains(e.target)) emailBtn.classList.remove('is-open');
     });
   }
 });

@@ -4,6 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mikaela's Portfolio</title>
+
+  <!-- Cubic 11 pixel font (applied to the bio text via --bio-font in styles.css) -->
+  <link rel="preconnect" href="https://cn-font.claude-code-best.win" crossorigin />
+  <link rel="stylesheet" href="https://cn-font.claude-code-best.win/packages/cubic/dist/Cubic/result.css" />
+
+  <!-- Font Awesome (free) — enables the <i class="fa-..."> contact icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -79,14 +87,30 @@
 
               <div class="about__bio">
                 <!-- ADD YOUR BIO / 个人简介 HERE (left-aligned) -->
-                <p>Placeholder — 在这里写你的个人简介。</p>
+                <h1>Mikaela. Duan</h1>
+                <p>计算机科学毕业生</p>
+                <p>数据分析 | 全栈开发 | 视觉设计 | 赛博观测者 | 偶尔的艺术家</p>
+                <p>欢迎来到我的小宇宙 🌌 这里住着一个写代码的、做数据分析的、偶尔画画的计算机毕业生。喜欢钻研、喜欢学新东西,也喜欢把想法变成看得见的作品。</p>
               </div>
 
             </div>
           </div>
         </div>
 
-        <!-- ADD MORE HOME BLOCKS BELOW (copy the .home-block above) -->
+        <!-- ===== BLOCK 2: Resume (简历) ===== -->
+        <div class="home-block home-block--resume">
+          <div class="home-block__content resume">
+            <h2>简历</h2>
+
+            <!-- ADD SKILLS HERE (white text, no border for now) -->
+            <div class="resume__text">
+              <h3>技能</h3>
+              <p>Placeholder — 在这里添加你的技能。</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADD MORE HOME BLOCKS BELOW (copy a .home-block above) -->
 
       </section>
 
@@ -112,11 +136,37 @@
 
       <!-- ---------- 联系我 / CONTACT ---------- -->
       <section class="section" data-section="contact">
-        <div class="section__inner">
-          <!-- ADD CONTACT INFO / LINKS HERE -->
-          <div class="circle" style="--circle-size: 160px;"><span>Email</span></div>
-          <div class="circle" style="--circle-size: 160px;"><span>微信</span></div>
-          <div class="circle" style="--circle-size: 160px;"><span>GitHub</span></div>
+        <div class="section__inner contact">
+
+          <!-- Email: click to reveal two addresses; click an address to copy it -->
+          <!-- (fa-light is Pro-only; using free fa-solid fa-envelope) -->
+          <div class="contact-btn contact-btn--email" role="button" tabindex="0" aria-label="Email">
+            <i class="contact-btn__icon fa-solid fa-envelope" aria-hidden="true"></i>
+            <div class="contact-emails">
+              <!-- REPLACE with your real emails -->
+              <button class="contact-email" type="button" data-email="mikaeladyj@outlook.com">mikaeladyj@outlook.com</button>
+              <button class="contact-email" type="button" data-email="lilinjojoko@gmail.com">lilinjojoko@gmail.com</button>
+            </div>
+          </div>
+
+          <!-- GitHub: paste your profile URL into href -->
+          <a class="contact-btn" href="https://github.com/Mikaela-Cycho" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <i class="contact-btn__icon fa-brands fa-github" aria-hidden="true"></i>
+          </a>
+
+          <!-- LinkedIn: paste your profile URL into href -->
+          <a class="contact-btn" href="https://www.linkedin.com/in/mikaela-duan-4879812a9/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <i class="contact-btn__icon fa-brands fa-linkedin" aria-hidden="true"></i>
+          </a>
+
+          <!-- Extra placeholder buttons — fill in or delete to keep just 3 -->
+          <a class="contact-btn" href="placeholder" target="_blank" rel="noopener noreferrer">
+            <span class="contact-btn__label">占位 4</span>
+          </a>
+          <a class="contact-btn" href="placeholder" target="_blank" rel="noopener noreferrer">
+            <span class="contact-btn__label">占位 5</span>
+          </a>
+
         </div>
       </section>
 

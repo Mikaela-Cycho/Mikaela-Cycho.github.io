@@ -23,6 +23,17 @@
   --nav-blur:   14px;                       /* strength of the frosted blur */
   --nav-border: rgba(255, 255, 255, 0.12);
 
+  /* About-me bio card */
+  --bio-box-bg:       rgba(255, 255, 255, 0.7); /* 70% opaque panel behind the text */
+  --bio-text:         #000000;                   /* bio text color — change freely */
+  /* Bio font — Cubic 11 pixel font (loaded in index.html <head>) */
+  --bio-font:         "Cubic 11", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  /* Pixel-style gradient border (top-left -> bottom-right) + hard shadow */
+  --bio-border-from:  #ff68a7;   /* top-left border color */
+  --bio-border-to:    #6a46fb;   /* bottom-right border color */
+  --bio-border-width: 4px;       /* thicker = chunkier pixel look */
+  --bio-shadow:       8px 8px 0 rgba(0, 0, 0, 0.35);  /* hard offset shadow (no blur) */
+
   /* Timing */
   --intro-duration:      800ms;
   --transition-duration: 700ms;  /* section slide */
@@ -107,7 +118,9 @@ body {
 /* When JS is running, hide the native cursor on clickables so the animated
    overlay takes over. Without JS, the static --cursor-click still shows. */
 .js-cursor .nav__tab,
-.js-cursor .circle {
+.js-cursor .circle,
+.js-cursor .contact-btn,
+.js-cursor .contact-email {
   cursor: none;
 }
 
@@ -303,6 +316,29 @@ body {
   justify-content: flex-start; /* left */
 }
 
+/* ---- RESUME block: 简历 section, white text, no border ---- */
+.home-block--resume {
+  align-items: flex-start;    /* top */
+  justify-content: flex-start; /* left */
+  padding-left: 100px;
+}
+
+.resume {
+  max-width: 900px;
+  width: 100%;
+}
+
+/* Force white text (override the muted paragraph color). */
+.resume h2,
+.resume h3,
+.resume p {
+  color: var(--text);
+}
+
+.resume__text {
+  margin-top: 1rem;
+}
+
 .about {
   max-width: 900px;           /* keep the bio from stretching too wide */
   width: 100%;
@@ -328,10 +364,30 @@ body {
   border-radius: 0;        /* set to 50% for a circular avatar */
 }
 
+/* Bio card: a semi-transparent, pixel-style framed panel so dark text stays
+   readable over the background image. Square corners + gradient border +
+   hard offset shadow give it a chunky retro / pixel-art feel. */
 .about__bio {
   flex: 1;
-  min-width: 240px;
+  min-width: 670px;
   text-align: left;
+  font-family: var(--bio-font);   /* pixel font, inherited by h1 + p */
+  background: var(--bio-box-bg);
+  /* diagonal gradient border; the trailing "1" slices the gradient onto
+     all four edges. Note: border-image forces square corners (no radius). */
+  border: var(--bio-border-width) solid;
+  border-image: linear-gradient(135deg, var(--bio-border-from), var(--bio-border-to)) 1;
+  box-shadow: var(--bio-shadow);
+  padding: 1.25rem 1.5rem;
+  backdrop-filter: blur(4px);          /* subtle frost; remove if unwanted */
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* All bio text uses --bio-text (overrides the muted color inherited from
+   .home-block__content p). Only the nav tabs stay semi-transparent. */
+.about__bio h1,
+.about__bio p {
+  color: var(--bio-text);
 }
 
 /* ============================================= */
@@ -413,6 +469,100 @@ body {
   transform: scale(var(--circle-hover-scale));
   background: rgba(255, 255, 255, 0.14);
 }
+
+/* ============================================= */
+/* CONTACT — rounded-square buttons              */
+/* ============================================= */
+.contact-btn {
+  position: relative;
+  width: var(--contact-size, 130px);
+  height: var(--contact-size, 130px);
+  background: var(--circle-bg);        /* semi-transparent (keeps white icons visible) */
+
+  /* same pixel-style frame as .about__bio: gradient border (square corners,
+     forced by border-image) + hard offset shadow for depth */
+  border: var(--bio-border-width) solid;
+  border-image: linear-gradient(135deg, #c2ff77, #7873f5, var(--bio-border-from), var(--bio-border-to)) 1;
+  box-shadow: var(--bio-shadow);
+  backdrop-filter: blur(2px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem;
+
+  color: var(--text);
+  text-decoration: none;
+  cursor: var(--cursor-click);
+  transition: transform 300ms var(--ease-out), background 300ms var(--ease);
+}
+
+.contact-btn:hover {
+  transform: scale(1.06);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.contact-btn__label {
+  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+  pointer-events: none;
+}
+
+/* Font Awesome contact icons */
+.contact-btn__icon {
+  font-size: clamp(2rem, 4vw, 2.75rem);   /* icon size */
+  color: var(--text);
+  line-height: 1;
+  pointer-events: none;   /* clicks land on the button, not the icon */
+}
+
+/* --- Email popover: two addresses stacked below the Email button --- */
+.contact-btn--email { cursor: var(--cursor-click); }
+
+.contact-emails {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--circle-border);
+  z-index: 5;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 250ms var(--ease), transform 250ms var(--ease);
+}
+
+.contact-btn--email.is-open .contact-emails {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.contact-email {
+  font: inherit;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--circle-border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  white-space: nowrap;
+  cursor: var(--cursor-click);
+  transition: background 200ms var(--ease);
+}
+
+.contact-email:hover { background: rgba(255, 255, 255, 0.2); }
+
+/* brief "copied" feedback */
+.contact-email.copied { background: rgba(80, 200, 120, 0.4); }
 
 /* ============================================= */
 /* RESPONSIVE                                    */
