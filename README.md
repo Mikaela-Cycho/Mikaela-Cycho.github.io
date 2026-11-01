@@ -66,15 +66,16 @@ their browser language is Chinese, English otherwise.
 
 ## What's left
 
-All the copy is written — there are no `[TODO: …]` placeholders on the page
-any more. **One thing remains**, and it's a deployment chore rather than
-content:
+Nothing — all the copy is written and there are no `[TODO: …]` placeholders
+left on the page.
 
-**Make the link preview absolute.** `og:image` and `og:url` in `index.html`
-currently use a relative path. Once you have a domain, change them to
-`https://yoursite.com/og-image.jpg` — LinkedIn and several other platforms
-won't resolve a relative image, so the preview stays blank until you do. It's
-the one `TODO` comment left in the file.
+The site is live at **https://mikaeladyj.com**, served by GitHub Pages from
+the `main` branch of `Mikaela-Cycho/Mikaela-Cycho.github.io`. The domain is
+configured by the `CNAME` file in the repo root; don't delete it, or Pages
+falls back to the github.io address.
+
+If the domain ever changes, two places need updating: that `CNAME` file, and
+the absolute `og:url` / `og:image` URLs in the `<head>` of `index.html`.
 
 All images are optimised: `images/me.jpg` is 800×800 / 63 KB with EXIF
 stripped, and the Art Room gallery is WebP at 536 KB total (down from 4.9 MB

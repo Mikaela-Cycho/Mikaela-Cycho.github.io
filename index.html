@@ -14,13 +14,16 @@
 <link href="apple-touch-icon.png" rel="apple-touch-icon">
 
 <!-- Link preview when you share the site on LinkedIn, WeChat, etc.
-     TODO: once you have a domain, make og:url and og:image ABSOLUTE
-     (https://yoursite.com/og-image.jpg). Several platforms — LinkedIn
-     included — won't resolve a relative image path. -->
+     These URLs must stay absolute — several platforms, LinkedIn included,
+     won't resolve a relative image path. If the domain ever changes, these
+     three lines and the CNAME file are what need updating. -->
 <meta content="website" property="og:type">
+<meta content="https://mikaeladyj.com/" property="og:url">
 <meta content="Yujia (Mikaela) Duan // Data Analytics &amp; Operations" property="og:title">
 <meta content="Data analyst turning scattered data into reports and workflows teams can act on. Currently looking for roles." property="og:description">
-<meta content="og-image.jpg" property="og:image">
+<meta content="https://mikaeladyj.com/og-image.jpg" property="og:image">
+<meta content="1200" property="og:image:width">
+<meta content="630" property="og:image:height">
 <meta content="summary_large_image" name="twitter:card">
 <!-- No external requests: fonts are self-hosted from /fonts/ and declared in
      the compiled stylesheet. Chinese text uses the reader's system font.
