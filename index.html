@@ -1,184 +1,1033 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html class="dark" lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mikaela's Portfolio</title>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Yujia (Mikaela) Duan // Data Analytics &amp; Operations</title>
+<meta content="Portfolio of Yujia (Mikaela) Duan — data analytics and operations. Currently looking for roles." id="meta-description" name="description">
+<meta content="#0e0e0e" name="theme-color">
 
-  <!-- Cubic 11 pixel font (applied to the bio text via --bio-font in styles.css) -->
-  <link rel="preconnect" href="https://cn-font.claude-code-best.win" crossorigin />
-  <link rel="stylesheet" href="https://cn-font.claude-code-best.win/packages/cubic/dist/Cubic/result.css" />
+<!-- Browser tab + home-screen icons, generated from images/my_pfp.png -->
+<link href="favicon-32.png" rel="icon" sizes="32x32" type="image/png">
+<link href="favicon-48.png" rel="icon" sizes="48x48" type="image/png">
+<link href="apple-touch-icon.png" rel="apple-touch-icon">
 
-  <!-- Font Awesome (free) — enables the <i class="fa-..."> contact icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+<!-- Link preview when you share the site on LinkedIn, WeChat, etc.
+     TODO: once you have a domain, make og:url and og:image ABSOLUTE
+     (https://yoursite.com/og-image.jpg). Several platforms — LinkedIn
+     included — won't resolve a relative image path. -->
+<meta content="website" property="og:type">
+<meta content="Yujia (Mikaela) Duan // Data Analytics &amp; Operations" property="og:title">
+<meta content="Data analyst turning scattered data into reports and workflows teams can act on. Currently looking for roles." property="og:description">
+<meta content="og-image.jpg" property="og:image">
+<meta content="summary_large_image" name="twitter:card">
+<!-- No external requests: fonts are self-hosted from /fonts/ and declared in
+     the compiled stylesheet. Chinese text uses the reader's system font.
+     Rebuild with `npm run build` after editing classes or styles. -->
+<link href="./dist/styles.css" rel="stylesheet">
+<!-- Warm up the three faces that paint above the fold, so the swap from the
+     fallback font happens before the reader notices it. -->
+<link as="font" crossorigin href="./fonts/space-grotesk-700.woff2" rel="preload" type="font/woff2">
+<link as="font" crossorigin href="./fonts/geist-sans-400.woff2" rel="preload" type="font/woff2">
+<link as="font" crossorigin href="./fonts/jetbrains-mono-400.woff2" rel="preload" type="font/woff2">
 
-  <link rel="stylesheet" href="styles.css" />
+<!-- All bilingual copy lives in i18n.js. Loaded before the page script. -->
+<script src="i18n.js"></script>
+<script>
+  /* Resolve the language before the first paint, so the Chinese font and
+     line-height are already in place when the text swaps in below. */
+  window.__initialLang = (function () {
+    var stored = null;
+    try {
+      stored = localStorage.getItem("site-lang");
+    } catch (e) {
+      /* private mode / storage disabled — fall back to the browser language */
+    }
+    if (stored === "en" || stored === "zh") return stored;
+    var browser = (navigator.language || navigator.userLanguage || "").toLowerCase();
+    return browser.indexOf("zh") === 0 ? "zh" : "en";
+  })();
+  document.documentElement.lang = window.__initialLang === "zh" ? "zh-CN" : "en";
+</script>
 </head>
-<body>
 
-  <!-- ============================================= -->
-  <!-- FIXED BACKGROUND IMAGE                        -->
-  <!-- Stays put behind everything, never scrolls.   -->
-  <!-- Set the image in styles.css: --bg-image       -->
-  <!-- ============================================= -->
-  <div class="bg" aria-hidden="true"></div>
+<body class="bg-surface-container-lowest font-body-sm text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-fixed">
 
-  <!-- ============================================= -->
-  <!-- INTRO ANIMATION SCREEN                        -->
-  <!-- ============================================= -->
-  <div id="intro" class="intro">
-    <!-- ADD/CHANGE INTRO TEXT HERE -->
-    <h1 class="intro__text">欢迎来到Mikaela的秘密基地</h1>
-  </div>
+<!-- ============================= HEADER ============================= -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/90 backdrop-blur-md border-b border-surface-container-high">
+<div class="relative h-14 w-full px-margin md:px-margin-desktop flex items-center justify-between gap-space-md">
 
-  <!-- ============================================= -->
-  <!-- MAIN PAGE                                     -->
-  <!-- ============================================= -->
-  <div id="main" class="main" aria-hidden="true">
+<a class="flex flex-col group shrink-0" href="#top">
+<span class="font-mono-display text-mono-display uppercase text-primary tracking-wider group-hover:text-primary-container transition-colors">Yujia (Mikaela) Duan</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase" data-i18n="brand.role">Data Analytics &amp; Operations</span>
+</a>
 
-    <!-- ===== CENTERED TOP NAV ===== -->
-    <nav class="nav">
-      <button class="nav__tab is-active" type="button" data-target="home">首页</button>
-      <span class="nav__sep">|</span>
-      <button class="nav__tab" type="button" data-target="works">作品</button>
-      <span class="nav__sep">|</span>
-      <button class="nav__tab" type="button" data-target="art">艺术</button>
-      <span class="nav__sep">|</span>
-      <button class="nav__tab" type="button" data-target="contact">联系我</button>
-    </nav>
+<!-- Desktop nav — centred in the header -->
+<nav aria-label="Main navigation" class="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-space-lg">
+<a class="nav-link" data-i18n="nav.about" href="#about">About</a>
+<a class="nav-link" data-i18n="nav.projects" href="#projects">Projects</a>
+<a class="nav-link" data-i18n="nav.contact" href="#contact">Contact</a>
+<a class="nav-link" data-i18n="nav.resume" href="#resume">Resume</a>
+</nav>
 
-    <!-- ===== SLIDING SECTIONS ===== -->
-    <div class="sections">
+<!-- Right: language switch + mobile menu button -->
+<div class="flex items-center gap-space-sm shrink-0">
 
-      <!-- ---------- 首页 / HOME ---------- -->
-      <!-- Home is a vertically scrollable page; stack more .home-block's below. -->
-      <section class="section is-active" data-section="home">
+<div aria-label="Language" class="flex items-center gap-1.5 border border-surface-container-high px-2 py-1" data-i18n-aria-label="lang.aria" id="lang-switch" role="group">
+<svg aria-hidden="true" class="w-3.5 h-3.5 text-outline shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="9"></circle>
+<path d="M3 12h18"></path>
+<path d="M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18"></path>
+</svg>
+<button class="lang-option" data-lang="en" type="button">EN</button>
+<span aria-hidden="true" class="font-mono-body text-mono-body text-outline">/</span>
+<button class="lang-option" data-lang="zh" type="button">中</button>
+</div>
 
-        <!-- ===== BLOCK 1: About me (≈ full screen) ===== -->
-        <!-- This block has its OWN background that scrolls with the page. -->
-        <div class="home-block home-block--about">
+<button aria-controls="mobile-menu" aria-expanded="false" aria-label="Open menu"
+  class="md:hidden flex items-center justify-center w-9 h-9 text-on-surface-variant hover:text-primary-container transition-colors"
+  id="menu-button" type="button">
+<svg aria-hidden="true" class="w-5 h-5" fill="none" id="menu-icon-open" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="square"></path>
+</svg>
+<svg aria-hidden="true" class="w-5 h-5 hidden" fill="none" id="menu-icon-close" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M6 6l12 12M18 6L6 18" stroke-linecap="square"></path>
+</svg>
+</button>
+</div>
+</div>
 
-          <!-- Decorative ball with TWO slow motions:
-               • wrapper ORBITS (revolves) around the anchor point
-               • image SELF-ROTATES on its own axis
-               Tune: --ball-top / --ball-left = anchor point,
-                     --orbit-radius = how wide the orbit circle is,
-                     --ball-size = ball diameter. -->
-          <div class="ball-orbit"
-               style="--ball-top: 33%; --ball-left: 35%; --orbit-radius: 80px;">
-            <img src="Page_pic/small_ball.png"
-                 class="ball-core"
-                 style="--ball-size: 520px;"
-                 alt="" aria-hidden="true" />
-          </div>
+<!-- Mobile menu panel -->
+<nav aria-label="Mobile navigation" class="hidden md:hidden border-t border-surface-container-high bg-surface-container-lowest/95 backdrop-blur-md" id="mobile-menu">
+<a class="nav-link-mobile" data-i18n="nav.about" href="#about">About</a>
+<a class="nav-link-mobile" data-i18n="nav.projects" href="#projects">Projects</a>
+<a class="nav-link-mobile" data-i18n="nav.contact" href="#contact">Contact</a>
+<a class="nav-link-mobile border-b-0" data-i18n="nav.resume" href="#resume">Resume</a>
+</nav>
+</header>
 
-          <div class="home-block__content about">
-            <h2>关于我</h2>
+<main class="w-full pt-14 bg-surface-container-lowest min-h-screen">
+<div class="flex flex-col w-full text-on-surface">
 
-            <!-- Row under the heading: profile picture (left) + bio (right) -->
-            <div class="about__row">
+<!-- Ambience 1 of 3: live clock -->
+<div class="w-full bg-surface-container-lowest px-margin md:px-margin-desktop py-space-xs flex items-center justify-end gap-space-sm font-label-caps text-label-caps text-on-surface-variant">
+<span class="inline-block w-2 h-2 bg-primary-container animate-pulse"></span>
+<span class="text-on-surface">LOCAL TIME: <span class="text-primary-container font-mono-display" id="realtime-clock">--:--:--</span></span>
+</div>
 
-              <!-- REPLACE / RESIZE YOUR PROFILE PICTURE HERE.
-                   Adjust size via --pfp-size (or just edit the img). -->
-              <img src="Page_pic/my_pfp_avatar.png"
-                   class="about__pfp"
-                   style="--pfp-size: 150px;"
-                   alt="Mikaela 的头像" />
+<!-- ============================= HERO ============================= -->
+<section class="relative w-full bg-surface-container-lowest px-margin md:px-margin-desktop pt-space-xl pb-12 flex flex-col justify-between scroll-mt-14" id="top">
+<div class="absolute inset-0 pointer-events-none opacity-5 bg-[radial-gradient(#7bfe6a_1px,transparent_1px)] [background-size:24px_24px]"></div>
 
-              <div class="about__bio">
-                <!-- ADD YOUR BIO / 个人简介 HERE (left-aligned) -->
-                <h1>Mikaela. Duan</h1>
-                <p>计算机科学毕业生</p>
-                <p>数据分析 | 全栈开发 | 视觉设计 | 赛博观测者 | 偶尔的艺术家</p>
-                <p>欢迎来到我的小宇宙 🌌 这里住着一个写代码的、做数据分析的、偶尔画画的计算机毕业生。喜欢钻研、喜欢学新东西,也喜欢把想法变成看得见的作品。</p>
-              </div>
+<div class="relative z-10 max-w-7xl mx-auto w-full flex flex-col gap-space-lg">
 
-            </div>
-          </div>
-        </div>
+<div class="flex flex-col gap-space-xs">
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg tracking-tight text-primary uppercase font-bold">Yujia (Mikaela) Duan</h1>
+<div class="flex items-center flex-wrap gap-x-2 pt-space-xs">
+<p class="font-headline-sm text-headline-sm text-on-surface font-medium" data-i18n="hero.tagline">
+Data analytics &amp; operations — currently looking for roles
+</p>
+<!-- Ambience 2 of 3: terminal cursor -->
+<span class="inline-block w-3 h-5 bg-primary-container animate-pulse translate-y-0.5 shadow-[0_0_8px_#7bfe6a]"></span>
+</div>
+</div>
 
-        <!-- ===== BLOCK 2: Resume (简历) ===== -->
-        <div class="home-block home-block--resume">
-          <div class="home-block__content resume">
-            <h2>简历</h2>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-md pt-space-sm">
+<div class="md:col-span-8 lg:col-span-7">
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed" data-i18n="hero.intro">
+Data analyst focused on turning scattered, messy data into clear reports and workflows that teams can actually act on. Currently looking for roles in data analysis and operations.
+</p>
+</div>
+</div>
 
-            <!-- ADD SKILLS HERE (white text, no border for now) -->
-            <div class="resume__text">
-              <h3>技能</h3>
-              <p>Placeholder — 在这里添加你的技能。</p>
-            </div>
-          </div>
-        </div>
+<div class="pt-space-lg">
+<a class="inline-flex items-center gap-space-xs font-mono-body text-mono-body text-on-surface-variant hover:text-primary-container transition-colors group" href="#about">
+<span class="text-primary-container group-hover:translate-y-1 transition-transform inline-block">▼</span>
+<span data-i18n="hero.more">Read more about me</span>
+</a>
+</div>
+</div>
+</section>
 
-        <!-- ADD MORE HOME BLOCKS BELOW (copy a .home-block above) -->
+<!-- ============================= ABOUT ============================= -->
+<section class="w-full bg-surface-container-low px-margin md:px-margin-desktop py-space-xl scroll-mt-14" id="about">
+<div class="max-w-7xl mx-auto w-full">
 
-      </section>
+<div class="flex items-center justify-between pb-space-md mb-space-lg bg-surface-container-highest/20 px-space-sm py-space-xs">
+<span class="font-label-caps text-label-caps text-primary-container tracking-widest uppercase">[ 01 / ABOUT ]</span>
+</div>
 
-      <!-- ---------- 作品 / WORKS ---------- -->
-      <section class="section" data-section="works">
-        <div class="section__inner">
-          <!-- ADD WORKS HERE (each project = one .circle) -->
-          <div class="circle" style="--circle-size: 180px;"><span>作品 1</span></div>
-          <div class="circle" style="--circle-size: 180px;"><span>作品 2</span></div>
-          <div class="circle" style="--circle-size: 180px;"><span>作品 3</span></div>
-        </div>
-      </section>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
 
-      <!-- ---------- 艺术 / ART ---------- -->
-      <section class="section" data-section="art">
-        <div class="section__inner">
-          <!-- ADD ART PIECES HERE -->
-          <div class="circle" style="--circle-size: 200px;"><span>艺术 1</span></div>
-          <div class="circle" style="--circle-size: 140px;"><span>艺术 2</span></div>
-          <div class="circle" style="--circle-size: 170px;"><span>艺术 3</span></div>
-        </div>
-      </section>
+<!-- Portrait -->
+<div class="lg:col-span-5 flex flex-col items-center lg:items-start">
+<div class="relative p-2 bg-surface-container-highest">
+<div class="relative bg-surface-container-lowest p-2">
+<div class="group relative w-72 sm:w-80 md:w-96 aspect-square overflow-hidden bg-surface-container">
+<!-- Replace images/me.jpg with your own photo (square crop works best). -->
+<img alt="Portrait of Yujia (Mikaela) Duan" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" data-i18n-alt="portrait.alt" id="portrait" src="images/me.jpg">
+<div class="absolute inset-0 hidden flex-col items-center justify-center gap-1 text-center px-4 font-mono-body text-mono-body text-outline" id="portrait-fallback">
+<span class="text-primary-container">[ NO IMAGE ]</span>
+<span data-i18n="portrait.missing">Add your photo at images/me.jpg</span>
+</div>
+<!-- Scanlines are the surprise, not the default: faint, and only on hover. -->
+<div class="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.5)_50%)] bg-[length:100%_4px] opacity-0 group-hover:opacity-25 transition-opacity duration-300"></div>
+</div>
+</div>
+<!-- Ambience 3 of 3: editorial figure caption -->
+<div class="w-full bg-surface-container-lowest mt-2 px-space-sm py-1 font-label-caps text-label-caps">
+<span class="text-primary-container tracking-wider">FIG. 01 — PORTRAIT</span>
+</div>
+</div>
+</div>
 
-      <!-- ---------- 联系我 / CONTACT ---------- -->
-      <section class="section" data-section="contact">
-        <div class="section__inner contact">
+<!-- Bio + skills -->
+<div class="lg:col-span-7 flex flex-col gap-space-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary font-bold tracking-tight" data-i18n="about.headline">
+I turn messy data into clear decisions.
+</h2>
+</div>
 
-          <!-- Email: click to reveal two addresses; click an address to copy it -->
-          <!-- (fa-light is Pro-only; using free fa-solid fa-envelope) -->
-          <div class="contact-btn contact-btn--email" role="button" tabindex="0" aria-label="Email">
-            <i class="contact-btn__icon fa-solid fa-envelope" aria-hidden="true"></i>
-            <div class="contact-emails">
-              <!-- REPLACE with your real emails -->
-              <button class="contact-email" type="button" data-email="mikaeladyj@outlook.com">mikaeladyj@outlook.com</button>
-              <button class="contact-email" type="button" data-email="lilinjojoko@gmail.com">lilinjojoko@gmail.com</button>
-            </div>
-          </div>
+<div class="flex flex-col gap-space-md font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+<p data-i18n="about.p1">
+I graduated from Carleton University with a B.C.S. Honours in Computer Science. After interning as a full-stack developer, I realized I enjoyed the questions behind the code more than the code itself: what the data is saying, and what to do next.
+</p>
+<p data-i18n="about.p2">
+Now I'm looking for data analyst or operations roles. Outside of job hunting, I'm launching my own content channels to practice growth and analytics firsthand. I speak English, Mandarin and Japanese, and I make art. (There's a hidden room for it somewhere on this site.)
+</p>
+</div>
 
-          <!-- GitHub: paste your profile URL into href -->
-          <a class="contact-btn" href="https://github.com/Mikaela-Cycho" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-            <i class="contact-btn__icon fa-brands fa-github" aria-hidden="true"></i>
-          </a>
+<!-- Technical skills -->
+<div class="flex flex-col gap-space-sm pt-space-xs">
+<div class="font-mono-display text-mono-display text-on-surface uppercase flex items-center gap-space-xs">
+<span class="text-primary-container">▪</span>
+<span data-i18n="about.techTitle">Technical Skills</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm pt-space-xs">
+<div class="skill-card">
+<div class="skill-card-title"><span class="text-primary-container">»</span> <span data-i18n="skill.sql.title">SQL &amp; Databases</span></div>
+<div class="skill-card-body" data-i18n="skill.sql.body">PostgreSQL, MySQL, schema design, complex queries</div>
+</div>
+<div class="skill-card">
+<div class="skill-card-title"><span class="text-primary-container">»</span> <span data-i18n="skill.python.title">Python</span></div>
+<div class="skill-card-body" data-i18n="skill.python.body">pandas, data cleaning, data pipelines</div>
+</div>
+<div class="skill-card">
+<div class="skill-card-title"><span class="text-primary-container">»</span> <span data-i18n="skill.bi.title">BI &amp; Visualization</span></div>
+<div class="skill-card-body" data-i18n="skill.bi.body">Power BI, Power Query, Excel, ECharts</div>
+</div>
+<div class="skill-card">
+<div class="skill-card-title"><span class="text-primary-container">»</span> <span data-i18n="skill.tools.title">Tools</span></div>
+<div class="skill-card-body" data-i18n="skill.tools.body">Git, Figma, Google Stitch</div>
+</div>
+<div class="skill-card">
+<div class="skill-card-title"><span class="text-primary-container">»</span> <span data-i18n="skill.programming.title">Programming</span></div>
+<div class="skill-card-body" data-i18n="skill.programming.body">Java, C, C++, Vue, HTML/CSS, JavaScript</div>
+</div>
+<div class="skill-card">
+<div class="skill-card-title"><span class="text-primary-container">»</span> <span data-i18n="skill.ai.title">AI-assisted Development</span></div>
+<div class="skill-card-body" data-i18n="skill.ai.body">Claude Code, Codex, Cursor</div>
+</div>
+</div>
+</div>
 
-          <!-- LinkedIn: paste your profile URL into href -->
-          <a class="contact-btn" href="https://www.linkedin.com/in/mikaela-duan-4879812a9/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-            <i class="contact-btn__icon fa-brands fa-linkedin" aria-hidden="true"></i>
-          </a>
+<!-- Non-technical skills -->
+<div class="flex flex-col gap-space-sm pt-space-sm">
+<div class="font-mono-display text-mono-display text-on-surface uppercase flex items-center gap-space-xs">
+<span class="text-primary-container">▪</span>
+<span data-i18n="about.nonTechTitle">Non-technical Skills</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm pt-space-xs">
+<div class="skill-card">
+<div class="skill-card-title"><span class="text-primary-container">»</span> <span data-i18n="skill.analysis.title">Analysis &amp; Communication</span></div>
+<div class="skill-card-body" data-i18n="skill.analysis.body">Turning findings into clear, stakeholder-ready insights; explaining technical results to non-technical audiences</div>
+</div>
+<div class="skill-card">
+<div class="skill-card-title"><span class="text-primary-container">»</span> <span data-i18n="skill.ops.title">Operations</span></div>
+<div class="skill-card-body" data-i18n="skill.ops.body">Requirements gathering, process clarification, cross-functional collaboration</div>
+</div>
+<div class="skill-card">
+<div class="skill-card-title"><span class="text-primary-container">»</span> <span data-i18n="skill.languages.title">Languages</span></div>
+<div class="skill-card-body" data-i18n="skill.languages.body">English (C1, IELTS 7) · Mandarin (Native) · Japanese (JLPT N2)</div>
+</div>
+<div class="skill-card">
+<div class="skill-card-title"><span class="text-primary-container">»</span> <span data-i18n="skill.design.title">Design &amp; UX Thinking</span></div>
+<div class="skill-card-body" data-i18n="skill.design.body">Understanding users through research and journey mapping; presenting data in ways people actually want to read.</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 
-          <!-- Extra placeholder buttons — fill in or delete to keep just 3 -->
-          <a class="contact-btn" href="placeholder" target="_blank" rel="noopener noreferrer">
-            <span class="contact-btn__label">占位 4</span>
-          </a>
-          <a class="contact-btn" href="placeholder" target="_blank" rel="noopener noreferrer">
-            <span class="contact-btn__label">占位 5</span>
-          </a>
+<!-- ============================= PROJECTS ============================= -->
+<section class="w-full bg-surface-container-lowest px-margin md:px-margin-desktop py-space-xl scroll-mt-14" id="projects">
+<div class="max-w-7xl mx-auto w-full flex flex-col gap-space-lg">
 
-        </div>
-      </section>
+<div class="flex items-center justify-between pb-space-md bg-surface-container-high/30 px-space-sm py-space-xs">
+<span class="font-label-caps text-label-caps text-primary-container tracking-widest uppercase">[ 02 / PROJECTS ]</span>
+</div>
 
-    </div>
-  </div>
+<div class="flex flex-col gap-space-sm">
 
-  <!-- Animated click cursor (APNG). Driven by script.js; shown only while
-       hovering clickable elements. Swap the src to change the animation. -->
-  <img id="anim-cursor" class="anim-cursor"
-       src="Page_pic/cursor_click_animation_sm.png"
-       alt="" aria-hidden="true" />
+<!-- Project 01 -->
+<article class="group relative bg-surface-container-low hover:bg-surface-container transition-colors duration-150 p-space-md md:p-space-lg flex flex-col gap-space-md">
+<div class="flex flex-col md:flex-row md:items-baseline justify-between gap-2">
+<div class="flex items-center gap-space-sm">
+<span class="font-mono-display text-mono-display text-primary-container font-bold">01</span>
+<h3 class="font-headline-lg text-headline-sm md:text-headline-lg text-primary group-hover:text-primary-container transition-colors font-bold" data-i18n="project.1.title">
+E-commerce Retail Analysis
+</h3>
+</div>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-4xl" data-i18n="project.1.desc">
+1.07M transactions from a UK online wholesaler, analyzed for growth, retention and returns.
+</p>
+<div class="flex flex-wrap items-center justify-between gap-space-md pt-space-xs">
+<div class="flex flex-wrap items-center gap-2">
+<span class="tag">Python</span>
+<span class="tag">pandas</span>
+<span class="tag">RFM</span>
+<span class="tag">Cohort Analysis</span>
+<span class="tag">Data Cleaning</span>
+</div>
+<a class="inline-flex items-center gap-1 font-mono-body text-mono-body text-primary-container hover:text-primary group-hover:underline" href="https://github.com/Mikaela-Cycho/ecommerce-data-analysis" rel="noopener noreferrer" target="_blank">
+<span data-i18n="project.viewGithub">View on GitHub</span>
+<span class="text-xs">[↗]</span>
+</a>
+</div>
+</article>
 
-  <script src="script.js"></script>
+<!-- Project 02 -->
+<article class="group relative bg-surface-container-low hover:bg-surface-container transition-colors duration-150 p-space-md md:p-space-lg flex flex-col gap-space-md">
+<div class="flex flex-col md:flex-row md:items-baseline justify-between gap-2">
+<div class="flex items-center gap-space-sm">
+<span class="font-mono-display text-mono-display text-primary-container font-bold">02</span>
+<h3 class="font-headline-lg text-headline-sm md:text-headline-lg text-primary group-hover:text-primary-container transition-colors font-bold" data-i18n="project.2.title">
+Smart Home System Prototype
+</h3>
+</div>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-4xl" data-i18n="project.2.desc">
+UX research and prototyping for a smart home control system.
+</p>
+<div class="flex flex-wrap items-center justify-between gap-space-md pt-space-xs">
+<div class="flex flex-wrap items-center gap-2">
+<span class="tag">User Research</span>
+<span class="tag">Journey Mapping</span>
+<span class="tag">Balsamiq</span>
+<span class="tag">Usability Testing</span>
+</div>
+<a class="inline-flex items-center gap-1 font-mono-body text-mono-body text-primary-container hover:text-primary group-hover:underline" href="https://github.com/Mikaela-Cycho/smart_home_app_design" rel="noopener noreferrer" target="_blank">
+<span data-i18n="project.viewGithub">View on GitHub</span>
+<span class="text-xs">[↗]</span>
+</a>
+</div>
+</article>
+
+<!-- Project 03 — currently building -->
+<article class="group relative bg-surface-container-low hover:bg-surface-container transition-colors duration-150 p-space-md md:p-space-lg flex flex-col gap-space-md">
+<div class="flex flex-col md:flex-row md:items-baseline justify-between gap-2">
+<div class="flex items-center gap-space-sm flex-wrap">
+<span class="font-mono-display text-mono-display text-primary-container font-bold">03</span>
+<h3 class="font-headline-lg text-headline-sm md:text-headline-lg text-primary group-hover:text-primary-container transition-colors font-bold" data-i18n="project.3.title">
+Analytics Tool for Small Merchants
+</h3>
+</div>
+<span class="font-label-caps text-label-caps bg-primary-container text-on-primary-fixed px-2 py-0.5 font-bold uppercase tracking-wider self-start" data-i18n="project.building">
+Currently building
+</span>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-4xl" data-i18n="project.3.desc">
+Sellers on Taobao, Douyin Shop, Xiaohongshu and independent storefronts all have order exports sitting in a spreadsheet nobody opens. Upload that CSV and the tool builds RFM customer segments, repeat-purchase rate, a retention curve, best sellers and average order value over time — then suggests a few concrete things to do about it.
+</p>
+<!-- Tags are not translated, matching projects 01 and 02 — tool and method
+     names stay English in both languages. -->
+<div class="flex flex-wrap items-center gap-2 pt-space-xs">
+<span class="tag">Vue</span>
+<span class="tag">DuckDB-WASM</span>
+<span class="tag">SQL</span>
+<span class="tag">ECharts</span>
+<span class="tag">RFM</span>
+<span class="tag">Cohort Analysis</span>
+</div>
+</article>
+</div>
+</div>
+</section>
+
+<!-- ============================= CONTACT ============================= -->
+<section class="w-full bg-surface-container-low px-margin md:px-margin-desktop py-space-xl scroll-mt-14" id="contact">
+<div class="max-w-7xl mx-auto w-full">
+
+<div class="flex items-center justify-between pb-space-md mb-space-lg bg-surface-container-highest/20 px-space-sm py-space-xs">
+<span class="font-label-caps text-label-caps text-primary-container tracking-widest uppercase">[ 03 / CONTACT ]</span>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
+
+<!-- Left: the ask -->
+<div class="lg:col-span-5 flex flex-col gap-space-md">
+<h2 class="font-headline-lg text-headline-lg text-primary font-bold" data-i18n="contact.heading">Get in touch</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed" data-i18n="contact.intro">
+I'm currently looking for data analytics and operations roles. If you're hiring, or just want to talk about data, I'd love to hear from you.
+</p>
+</div>
+
+<!-- Right: the three ways to reach me -->
+<div class="lg:col-span-7 flex flex-col gap-space-sm">
+<a class="p-space-sm bg-surface-container hover:bg-surface-container-high transition-colors flex items-center justify-between group" href="mailto:mikaeladyj@gmail.com">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-outline uppercase" data-i18n="contact.emailLabel">Email</span>
+<span class="font-mono-display text-mono-display text-on-surface group-hover:text-primary-container">mikaeladyj@gmail.com</span>
+</div>
+<span class="font-mono-display text-primary-container group-hover:translate-x-1 transition-transform">→</span>
+</a>
+<a class="p-space-sm bg-surface-container hover:bg-surface-container-high transition-colors flex items-center justify-between group" href="https://github.com/Mikaela-Cycho" rel="noopener noreferrer" target="_blank">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-outline uppercase">GitHub</span>
+<span class="font-mono-display text-mono-display text-on-surface group-hover:text-primary-container">github.com/Mikaela-Cycho</span>
+</div>
+<span class="font-mono-display text-primary-container group-hover:translate-x-1 transition-transform">→</span>
+</a>
+<a class="p-space-sm bg-surface-container hover:bg-surface-container-high transition-colors flex items-center justify-between group" href="https://www.linkedin.com/in/mikaela-duan-4879812a9/" rel="noopener noreferrer" target="_blank">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-outline uppercase">LinkedIn</span>
+<span class="font-mono-display text-mono-display text-on-surface group-hover:text-primary-container">linkedin.com/in/mikaela-duan-4879812a9</span>
+</div>
+<span class="font-mono-display text-primary-container group-hover:translate-x-1 transition-transform">→</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ============================= RESUME ============================= -->
+<section class="w-full bg-surface-container-lowest px-margin md:px-margin-desktop py-space-xl scroll-mt-14" id="resume">
+<div class="max-w-7xl mx-auto w-full flex flex-col gap-space-lg">
+
+<div class="flex items-center justify-between pb-space-md bg-surface-container-high/30 px-space-sm py-space-xs">
+<span class="font-label-caps text-label-caps text-primary-container tracking-widest uppercase">[ 04 / RESUME ]</span>
+</div>
+
+<div class="flex flex-col gap-space-md">
+<h2 class="font-headline-lg text-headline-lg text-primary font-bold" data-i18n="resume.heading">Resume</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-3xl" data-i18n="resume.intro">
+The full version — education, experience and the projects above in more detail.
+</p>
+</div>
+
+<!-- Download button. href and the saved filename are set per language by the
+     script, from the RESUME paths in i18n.js. -->
+<a class="group relative block w-full overflow-hidden border border-outline-variant bg-surface-container hover:bg-surface-container-high hover:border-primary-container transition-all duration-300 hover:shadow-[0_0_24px_rgba(123,254,106,0.35)] px-space-md py-space-md md:py-space-lg"
+  download id="resume-link" href="#">
+<!-- The shimmer: a soft band of green that sweeps across on hover. -->
+<span aria-hidden="true" class="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-primary-container/25 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"></span>
+
+<span class="relative flex items-center justify-between gap-space-md">
+<span class="flex flex-col gap-0.5 min-w-0">
+<span class="font-label-caps text-label-caps text-outline uppercase tracking-widest">PDF</span>
+<span class="font-mono-display text-mono-display text-on-surface group-hover:text-primary-container transition-colors truncate" data-i18n="resume.button">Download my resume</span>
+</span>
+<span aria-hidden="true" class="font-mono-display text-mono-display text-primary-container shrink-0 transition-transform duration-300 group-hover:translate-y-1">↓</span>
+</span>
+</a>
+
+<p aria-live="polite" class="font-mono-body text-mono-body text-error hidden" id="resume-status" role="status"></p>
+</div>
+</section>
+
+</div>
+</main>
+
+<!-- ============================= FOOTER (single) ============================= -->
+<footer class="w-full bg-surface-container-lowest border-t border-surface-container-high py-space-lg">
+<div class="max-w-7xl mx-auto px-margin md:px-margin-desktop flex flex-col md:flex-row items-center justify-between gap-space-md font-label-caps text-label-caps">
+<span class="text-on-surface-variant">© <span id="footer-year">2026</span> Yujia (Mikaela) Duan</span>
+<span class="text-outline" data-i18n="footer.builtWith">Built with Tailwind CSS</span>
+<span class="flex items-center gap-space-sm">
+<span class="text-outline">?</span>
+<!-- The easter egg trigger. Muted at rest so it stays a find; full colour,
+     a little bigger and a green glow once you hover it. -->
+<button aria-label="Open the Art Room" class="group flex items-center justify-center cursor-pointer" data-i18n-aria-label="footer.artRoomAria" id="secret-button" title="???" type="button">
+<img alt="" class="h-7 w-auto opacity-60 saturate-50 transition-all duration-200 group-hover:opacity-100 group-hover:saturate-100 group-hover:scale-110 group-hover:drop-shadow-[0_0_6px_rgba(123,254,106,0.7)]" draggable="false" src="images/my_pfp_sm.png">
+</button>
+</span>
+</div>
+</footer>
+
+<!-- ============================= EASTER EGG: ART ROOM ============================= -->
+<div aria-labelledby="art-room-title" aria-modal="true" class="fixed inset-0 z-[60] bg-surface-container-lowest/95 backdrop-blur-md hidden flex-col justify-between p-space-md md:p-space-xl overflow-y-auto" id="art-room-modal" role="dialog">
+<div class="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.45)_50%)] bg-[length:100%_4px] opacity-60"></div>
+
+<div class="relative z-10 max-w-6xl mx-auto w-full flex flex-col gap-space-lg my-auto">
+
+<div class="flex items-center justify-between gap-space-sm bg-surface-container px-space-sm py-2">
+<div class="flex items-center gap-space-sm">
+<span class="w-2.5 h-2.5 bg-primary-container animate-ping"></span>
+<span class="font-mono-display text-mono-display text-primary-container uppercase font-bold tracking-widest" data-i18n="art.title" id="art-room-title">The Art Room</span>
+</div>
+<button class="font-mono-body text-mono-body bg-primary-container text-on-primary-fixed hover:bg-primary font-bold px-3 py-1 cursor-pointer" data-i18n="art.close" id="art-room-close" type="button">
+Back to reality [ESC]
+</button>
+</div>
+
+<div class="flex flex-col gap-1">
+<p class="font-headline-sm text-headline-sm text-primary font-bold" data-i18n="art.subtitle">Things I made that aren't work</p>
+<p class="font-mono-body text-mono-body text-on-surface-variant">
+<span data-i18n="art.konami">Found it. Also reachable via the Konami code:</span>
+<span class="text-primary-container font-mono-display">↑ ↑ ↓ ↓ ← → ← → B A</span>
+</p>
+</div>
+
+<!-- Tiles are rendered from the ART_PIECES list in i18n.js. -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-space-md" id="art-grid"></div>
+
+<p class="font-label-caps text-label-caps text-on-surface-variant pt-space-xs" data-i18n="art.exit">
+Press [ESC] or the button above to go back.
+</p>
+</div>
+</div>
+
+<!-- ============================= CUSTOM CURSOR =============================
+     An APNG in a real <img>, because `cursor: url()` only renders an APNG's
+     first frame. Activated by script only on fine-pointer devices. -->
+<div aria-hidden="true" id="custom-cursor">
+<img alt="" draggable="false" src="images/cursor_click_animation_sm.png">
+</div>
+
+<script>
+/* ==========================================================================
+   All editable content — both languages, and the Art Room image list —
+   lives in i18n.js. Nothing in this file needs configuring.
+   ========================================================================== */
+
+(function () {
+  "use strict";
+
+  const STORAGE_KEY = "site-lang";
+  const FADE_MS = 150;
+  const DICTS = window.I18N || { en: {}, zh: {} };
+  const ART_PIECES = window.ART_PIECES || [];
+  const RESUME = window.RESUME || {};
+
+  let currentLang = window.__initialLang === "zh" ? "zh" : "en";
+
+  /* Look up a key in the active language, falling back to English, then to
+     the key itself so a typo is visible rather than silently blank. */
+  function t(key, replacements) {
+    const dict = DICTS[currentLang] || {};
+    let value = dict[key];
+    if (value === undefined) value = (DICTS.en || {})[key];
+    if (value === undefined) return key;
+    if (replacements) {
+      Object.keys(replacements).forEach((name) => {
+        value = value.replace("{" + name + "}", replacements[name]);
+      });
+    }
+    return value;
+  }
+
+  /* ---------- Language switching ---------- */
+
+  const langButtons = Array.from(document.querySelectorAll("#lang-switch [data-lang]"));
+  const metaDescription = document.getElementById("meta-description");
+
+  function translateDocument() {
+    document.querySelectorAll("[data-i18n]").forEach((el) => {
+      el.textContent = t(el.getAttribute("data-i18n"));
+    });
+    document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+      el.placeholder = t(el.getAttribute("data-i18n-placeholder"));
+    });
+    document.querySelectorAll("[data-i18n-aria-label]").forEach((el) => {
+      el.setAttribute("aria-label", t(el.getAttribute("data-i18n-aria-label")));
+    });
+    document.querySelectorAll("[data-i18n-alt]").forEach((el) => {
+      el.setAttribute("alt", t(el.getAttribute("data-i18n-alt")));
+    });
+
+    // Things that aren't plain data-i18n swaps:
+    document.documentElement.lang = currentLang === "zh" ? "zh-CN" : "en";
+    document.title = t("meta.title");
+    if (metaDescription) metaDescription.setAttribute("content", t("meta.description"));
+
+    syncMenuLabel();
+    syncResumeLink();
+    if (modal && !modal.classList.contains("hidden")) buildArtGrid();
+
+    langButtons.forEach((button) => {
+      const isActive = button.getAttribute("data-lang") === currentLang;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-pressed", String(isActive));
+    });
+  }
+
+  function setLang(lang, options) {
+    const animate = !(options && options.animate === false);
+    if (lang !== "en" && lang !== "zh") lang = "en";
+
+    const changed = lang !== currentLang;
+    currentLang = lang;
+
+    try {
+      localStorage.setItem(STORAGE_KEY, lang);
+    } catch (e) {
+      /* storage unavailable — the choice just won't persist */
+    }
+
+    if (!animate || !changed) {
+      translateDocument();
+      return;
+    }
+
+    const root = document.documentElement;
+    root.classList.add("lang-switching");
+    window.setTimeout(() => {
+      translateDocument();
+      root.classList.remove("lang-switching");
+    }, FADE_MS);
+  }
+
+  langButtons.forEach((button) => {
+    button.addEventListener("click", () => setLang(button.getAttribute("data-lang")));
+  });
+
+  /* ---------- Local clock ---------- */
+  const clockEl = document.getElementById("realtime-clock");
+  if (clockEl) {
+    const tick = () => {
+      clockEl.textContent = new Date().toLocaleTimeString([], { hour12: false });
+    };
+    tick();
+    setInterval(tick, 1000);
+  }
+
+  /* ---------- Footer year ---------- */
+  const yearEl = document.getElementById("footer-year");
+  if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+  /* ---------- Portrait fallback ---------- */
+  const portrait = document.getElementById("portrait");
+  const portraitFallback = document.getElementById("portrait-fallback");
+  if (portrait && portraitFallback) {
+    portrait.addEventListener("error", () => {
+      portrait.classList.add("hidden");
+      portraitFallback.classList.remove("hidden");
+      portraitFallback.classList.add("flex");
+    });
+  }
+
+  /* ---------- Mobile menu ---------- */
+  const menuButton = document.getElementById("menu-button");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const iconOpen = document.getElementById("menu-icon-open");
+  const iconClose = document.getElementById("menu-icon-close");
+
+  function syncMenuLabel() {
+    if (!menuButton) return;
+    const open = menuButton.getAttribute("aria-expanded") === "true";
+    menuButton.setAttribute("aria-label", t(open ? "menu.close" : "menu.open"));
+  }
+
+  function setMenu(open) {
+    if (!menuButton || !mobileMenu) return;
+    mobileMenu.classList.toggle("hidden", !open);
+    menuButton.setAttribute("aria-expanded", String(open));
+    syncMenuLabel();
+    if (iconOpen) iconOpen.classList.toggle("hidden", open);
+    if (iconClose) iconClose.classList.toggle("hidden", !open);
+  }
+
+  if (menuButton && mobileMenu) {
+    menuButton.addEventListener("click", () => {
+      setMenu(menuButton.getAttribute("aria-expanded") !== "true");
+    });
+    // Close after tapping a link so the target section is visible.
+    mobileMenu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => setMenu(false));
+    });
+
+    /* Widening past the `md` breakpoint hides the panel via CSS, but the
+       button would be left claiming aria-expanded="true" with a close icon.
+       Reset the state so it matches what's on screen. */
+    try {
+      const desktop =
+        typeof window.matchMedia === "function" ? window.matchMedia("(min-width: 768px)") : null;
+      const resetOnDesktop = (event) => {
+        if (event.matches) setMenu(false);
+      };
+      if (desktop && desktop.addEventListener) desktop.addEventListener("change", resetOnDesktop);
+      else if (desktop && desktop.addListener) desktop.addListener(resetOnDesktop);
+    } catch (e) {
+      /* no matchMedia, or it threw — the menu just won't auto-reset on resize */
+    }
+  }
+
+  /* ---------- Scroll spy: highlight the nav link for the visible section ----------
+     Smooth scrolling itself is CSS (`scroll-behavior: smooth` + `scroll-mt-14`). */
+  const navLinks = Array.from(document.querySelectorAll(".nav-link, .nav-link-mobile"));
+  const sections = ["about", "projects", "contact", "resume"]
+    .map((id) => document.getElementById(id))
+    .filter(Boolean);
+
+  if (navLinks.length && sections.length) {
+    const setActive = (id) => {
+      navLinks.forEach((link) => {
+        link.classList.toggle("is-active", !!id && link.getAttribute("href") === "#" + id);
+      });
+    };
+
+    /* A section becomes "current" once its top passes just under the fixed
+       header. Sections land at 56px because of `scroll-mt-14`, so 72px leaves
+       a little tolerance.
+
+       This replaced an IntersectionObserver that compared intersectionRatio
+       across sections. That was wrong twice over: a callback only receives
+       the entries that *changed*, so a batch containing only a section that
+       stopped intersecting left the old link highlighted; and ratios are
+       relative to each target's own height, so a short section always
+       outscored a tall one. Reading positions directly has neither problem
+       and is deterministic at any scroll offset. */
+    const ACTIVATION_LINE = 72;
+
+    const currentSectionId = () => {
+      /* The last section can be too short to ever push its top past the line,
+         so claim it outright at the bottom of the page — otherwise Contact
+         could never light up. */
+      const docHeight = Math.max(
+        document.documentElement.scrollHeight,
+        document.body ? document.body.scrollHeight : 0
+      );
+      if (window.scrollY + window.innerHeight >= docHeight - 2) {
+        return sections[sections.length - 1].id;
+      }
+
+      let current = null;
+      sections.forEach((section) => {
+        if (section.getBoundingClientRect().top <= ACTIVATION_LINE) current = section.id;
+      });
+      return current; // null while the hero is still in view
+    };
+
+    /* Coalesce bursts of scroll events into one read per frame. Falls back to
+       a timer rather than failing if requestAnimationFrame isn't there. */
+    const onNextFrame =
+      typeof window.requestAnimationFrame === "function"
+        ? window.requestAnimationFrame.bind(window)
+        : (fn) => window.setTimeout(fn, 16);
+
+    let spyQueued = false;
+    const refreshActive = () => {
+      if (spyQueued) return;
+      spyQueued = true;
+      onNextFrame(() => {
+        spyQueued = false;
+        setActive(currentSectionId());
+      });
+    };
+
+    window.addEventListener("scroll", refreshActive, { passive: true });
+    window.addEventListener("resize", refreshActive, { passive: true });
+    refreshActive();
+  }
+
+  /* ---------- Resume download ----------
+     The link is a plain <a download>, so it still works with no JS at all.
+     The click handler only exists to catch the case where the PDF hasn't
+     been uploaded yet — without it the browser would navigate away to a 404
+     and the visitor would lose their place on the page. */
+  const resumeLink = document.getElementById("resume-link");
+  const resumeStatus = document.getElementById("resume-status");
+  let resumeVerified = false;
+
+  function syncResumeLink() {
+    if (!resumeLink) return;
+    const file = RESUME[currentLang] || RESUME.en;
+    if (!file) return;
+    resumeLink.setAttribute("href", file);
+    // Save it under a clean name regardless of the path it came from.
+    resumeLink.setAttribute("download", file.split("/").pop());
+    resumeVerified = false;
+    if (resumeStatus) {
+      resumeStatus.textContent = "";
+      resumeStatus.classList.add("hidden");
+    }
+  }
+
+  if (resumeLink) {
+    resumeLink.addEventListener("click", async (event) => {
+      if (resumeVerified) {
+        resumeVerified = false; // this is the re-dispatched click; let it run
+        return;
+      }
+      if (typeof fetch !== "function") return; // no way to check; just follow it
+
+      event.preventDefault();
+      try {
+        const response = await fetch(resumeLink.getAttribute("href"), { method: "HEAD" });
+        if (response.ok) {
+          resumeVerified = true;
+          resumeLink.click();
+        } else if (resumeStatus) {
+          resumeStatus.textContent = t("resume.missing");
+          resumeStatus.classList.remove("hidden");
+        }
+      } catch (e) {
+        // Offline, or opened over file:// where HEAD isn't allowed —
+        // fall back to letting the browser handle the link normally.
+        resumeVerified = true;
+        resumeLink.click();
+      }
+    });
+  }
+
+  /* ---------- Art Room ---------- */
+  const modal = document.getElementById("art-room-modal");
+  const artGrid = document.getElementById("art-grid");
+  const secretButton = document.getElementById("secret-button");
+  const closeButton = document.getElementById("art-room-close");
+  let lastFocused = null;
+
+  /* Art piece titles/captions are per-language objects: { en: "…", zh: "…" }.
+     A plain string still works, in case you'd rather not translate one. */
+  function localizedField(value) {
+    if (value && typeof value === "object") {
+      return value[currentLang] !== undefined ? value[currentLang] : value.en || "";
+    }
+    return value || "";
+  }
+
+  function buildArtGrid() {
+    if (!artGrid) return;
+    artGrid.textContent = "";
+
+    ART_PIECES.forEach((piece) => {
+      const tile = document.createElement("figure");
+      tile.className = "bg-surface-container p-space-sm flex flex-col gap-space-sm m-0";
+
+      const frame = document.createElement("div");
+      /* 4:3 and object-contain rather than a square crop — these are
+         landscape pieces, and cropping someone's artwork to fit a grid is
+         the one thing a gallery shouldn't do. */
+      frame.className =
+        "relative aspect-[4/3] bg-surface-container-lowest overflow-hidden flex items-center justify-center";
+
+      const titleText = localizedField(piece.title);
+
+      const img = document.createElement("img");
+      img.className = "w-full h-full object-contain";
+      img.loading = "lazy";
+      img.alt = titleText;
+      img.src = piece.file;
+
+      const fallback = document.createElement("div");
+      fallback.className =
+        "hidden absolute inset-0 flex-col items-center justify-center gap-1 text-center px-3 font-mono-body text-mono-body text-outline";
+      const fallbackTop = document.createElement("span");
+      fallbackTop.className = "text-primary-container";
+      fallbackTop.textContent = "[ NO IMAGE ]";
+      const fallbackPath = document.createElement("span");
+      fallbackPath.textContent = piece.file;
+      fallback.append(fallbackTop, fallbackPath);
+
+      img.addEventListener("error", () => {
+        img.classList.add("hidden");
+        fallback.classList.remove("hidden");
+        fallback.classList.add("flex");
+      });
+
+      frame.append(img, fallback);
+
+      const caption = document.createElement("figcaption");
+      caption.className = "flex flex-col";
+      const title = document.createElement("span");
+      title.className = "font-mono-display text-mono-display text-primary uppercase font-bold";
+      title.textContent = titleText;
+      caption.append(title);
+
+      // `caption` is optional — only render the second line if there is one.
+      const captionText = localizedField(piece.caption);
+      if (captionText) {
+        const sub = document.createElement("span");
+        sub.className = "font-label-caps text-label-caps text-outline";
+        sub.textContent = captionText;
+        caption.append(sub);
+      }
+
+      tile.append(frame, caption);
+      artGrid.append(tile);
+    });
+  }
+
+  function toggleArtRoom(show) {
+    if (!modal) return;
+    if (show) {
+      lastFocused = document.activeElement;
+      buildArtGrid();
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      document.body.style.overflow = "hidden";
+      if (closeButton) closeButton.focus();
+    } else {
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+      document.body.style.overflow = "";
+      if (lastFocused && typeof lastFocused.focus === "function") lastFocused.focus();
+    }
+  }
+
+  if (secretButton) secretButton.addEventListener("click", () => toggleArtRoom(true));
+  if (closeButton) closeButton.addEventListener("click", () => toggleArtRoom(false));
+
+  // Clicking the backdrop closes it. The scanline overlay is pointer-events:
+  // none, so a click out there really does land on the modal itself.
+  if (modal) {
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) toggleArtRoom(false);
+    });
+  }
+
+  /* Keep Tab inside the dialog while it's open — otherwise focus walks off
+     into the page behind it, which a screen-reader or keyboard user can't
+     see is still there. */
+  function trapFocus(event) {
+    if (!modal || modal.classList.contains("hidden")) return;
+    const focusable = modal.querySelectorAll(
+      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (!modal.contains(document.activeElement)) {
+      event.preventDefault();
+      first.focus();
+      return;
+    }
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+
+  /* ---------- Keyboard: Escape, and the Konami code ---------- */
+  const konami = ["arrowup", "arrowup", "arrowdown", "arrowdown", "arrowleft", "arrowright", "arrowleft", "arrowright", "b", "a"];
+  let konamiIndex = 0;
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      toggleArtRoom(false);
+      setMenu(false);
+      return;
+    }
+
+    if (event.key === "Tab") {
+      trapFocus(event);
+      return;
+    }
+
+    // Don't capture the sequence while someone is typing in the form.
+    const tag = event.target && event.target.tagName;
+    if (tag === "INPUT" || tag === "TEXTAREA") return;
+
+    if (event.key.toLowerCase() === konami[konamiIndex]) {
+      konamiIndex += 1;
+      if (konamiIndex === konami.length) {
+        konamiIndex = 0;
+        toggleArtRoom(true);
+      }
+    } else {
+      konamiIndex = event.key.toLowerCase() === konami[0] ? 1 : 0;
+    }
+  });
+
+  /* ---------- Custom cursor ----------
+     The pointer position is written straight to `transform` on each
+     mousemove — a compositor-only property, so this doesn't trigger layout.
+     Deliberately not throttled through requestAnimationFrame: a cursor that
+     trails the real pointer by even one frame feels broken.
+
+     The scale states live on the inner <img> rather than this element, so
+     their transition never delays the position. */
+  /* Wrapped in try/catch on purpose: the cursor is decoration, and nothing
+     decorative should be able to stop the language switch or the form from
+     initialising below it. */
+  try {
+    initCustomCursor();
+  } catch (e) {
+    /* leave the native cursor alone and carry on */
+  }
+
+  function initCustomCursor() {
+    const cursorEl = document.getElementById("custom-cursor");
+    const mq = typeof window.matchMedia === "function" ? window.matchMedia.bind(window) : null;
+    if (!cursorEl || !mq) return;
+
+    const finePointer = mq("(hover: hover) and (pointer: fine)");
+    const reducedMotion = mq("(prefers-reduced-motion: reduce)");
+
+    if (finePointer.matches && !reducedMotion.matches) {
+      const CLICKABLE = 'a, button, [role="button"], label, summary';
+      const TEXT_FIELD = 'input:not([type="button"]):not([type="submit"]), textarea, select';
+      const root = document.documentElement;
+
+      root.classList.add("has-custom-cursor");
+
+      /* ?cursor-debug puts a crosshair at the real pointer position, so you can
+         check the tip is landing on it. Tune --cursor-hotspot-x/y in
+         src/input.css until the arrow's point sits on the cross. */
+      let debugDot = null;
+      if (window.location.search.indexOf("cursor-debug") !== -1) {
+        debugDot = document.createElement("div");
+        debugDot.id = "cursor-debug-dot";
+        debugDot.setAttribute("aria-hidden", "true");
+        document.body.appendChild(debugDot);
+      }
+
+      document.addEventListener(
+        "mousemove",
+        (event) => {
+          cursorEl.style.transform =
+            "translate3d(" + event.clientX + "px," + event.clientY + "px,0)";
+          cursorEl.classList.add("is-visible");
+          if (debugDot) {
+            debugDot.style.transform =
+              "translate3d(" + event.clientX + "px," + event.clientY + "px,0)";
+          }
+
+          const target = event.target;
+          const closest = target && typeof target.closest === "function" ? target.closest.bind(target) : null;
+          const overText = closest ? !!closest(TEXT_FIELD) : false;
+          cursorEl.classList.toggle("is-over-text", overText);
+          cursorEl.classList.toggle("is-pointer", !overText && (closest ? !!closest(CLICKABLE) : false));
+        },
+        { passive: true }
+      );
+
+      document.addEventListener("mousedown", () => cursorEl.classList.add("is-down"), { passive: true });
+      document.addEventListener("mouseup", () => cursorEl.classList.remove("is-down"), { passive: true });
+
+      // Don't leave the arrow parked at the edge when the pointer goes away.
+      root.addEventListener("mouseleave", () => cursorEl.classList.remove("is-visible"));
+      root.addEventListener("mouseenter", () => cursorEl.classList.add("is-visible"));
+      window.addEventListener("blur", () => {
+        cursorEl.classList.remove("is-visible", "is-down");
+      });
+    }
+  }
+
+  /* ---------- Go ---------- */
+  setLang(currentLang, { animate: false });
+})();
+</script>
+
 </body>
+
 </html>

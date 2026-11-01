@@ -1,17 +1,17 @@
-# OS / editor
-.DS_Store
-Thumbs.db
-.vscode/
-.idea/
-
-# Logs
-*.log
-npm-debug.log*
-
-# Dependencies (in case tooling is added later)
 node_modules/
 
-# Full-resolution cursor source art (only the downscaled *_sm.png are used)
-Page_pic/cursor_normal.png
-Page_pic/cursor_click.png
-Page_pic/cursor_click_animation.PNG
+# Source originals — kept locally, not worth pushing.
+# WARNING: these exist only on your machine once ignored. Back them up
+# somewhere (cloud drive, external disk) before you rely on this.
+images/art/_originals/
+images/me-full.jpg
+
+# The original Google Stitch export, superseded by everything since.
+stitch_pixel_minimalist_portfolio_website.zip
+
+# Scratch files
+.chk.js
+*.log
+
+# dist/styles.css is intentionally NOT ignored — it's committed so the site can
+# be deployed by uploading the folder, with no build step on the host.

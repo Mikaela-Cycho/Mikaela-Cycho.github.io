@@ -1,0 +1,318 @@
+@import "./fonts.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    overscroll-behavior: none;
+  }
+
+  main > :first-child {
+    margin-top: 0 !important;
+  }
+
+  main > :last-child {
+    margin-bottom: 0 !important;
+  }
+
+  /* Smooth scrolling for the in-page nav links. */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    .animate-pulse,
+    .animate-ping {
+      animation: none;
+    }
+
+    /* Catch-all so hover transforms and fades added later are covered too,
+       without having to remember this block each time. */
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+
+  /* Thin scrollbar that matches the theme. The Stitch export hid the
+     scrollbar entirely, which makes a long page hard to navigate. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #2a2a2a #0e0e0e;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0e0e0e;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #2a2a2a;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #3e4a39;
+  }
+
+  /* Visible keyboard focus everywhere (the export removed all focus rings). */
+  :focus-visible {
+    outline: 2px solid #7bfe6a;
+    outline-offset: 2px;
+  }
+
+  /* --- Language switch: a quick cross-fade on just the translated text --- */
+  [data-i18n] {
+    transition: opacity 150ms ease-in-out;
+  }
+
+  html.lang-switching [data-i18n] {
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-i18n] {
+      transition: none;
+    }
+
+    html.lang-switching [data-i18n] {
+      opacity: 1;
+    }
+  }
+}
+
+@layer components {
+  /* Desktop nav link, plus the state the scroll-spy script toggles. */
+  .nav-link {
+    @apply font-mono-body text-mono-body text-on-surface-variant hover:text-on-surface tracking-wider py-1 uppercase border-b-2 border-transparent transition-colors;
+  }
+
+  .nav-link.is-active {
+    @apply text-primary-container border-primary-container;
+  }
+
+  .nav-link-mobile {
+    @apply block font-mono-body text-mono-body text-on-surface-variant hover:text-primary-container tracking-wider uppercase px-margin py-3 border-b border-surface-container-high transition-colors;
+  }
+
+  .nav-link-mobile.is-active {
+    @apply text-primary-container;
+  }
+
+  /* Skill card used in the About section. */
+  .skill-card {
+    @apply bg-surface-container p-space-sm;
+  }
+
+  .skill-card-title {
+    @apply font-mono-body text-mono-body text-primary uppercase font-bold mb-1 flex items-center gap-1;
+  }
+
+  .skill-card-body {
+    @apply font-body-sm text-body-sm text-on-surface-variant;
+  }
+
+  /* Tech tag pill on project cards. */
+  .tag {
+    @apply font-mono-body text-mono-body bg-surface-container-high px-2 py-0.5 text-secondary;
+  }
+
+  /* ==========================================================================
+     Custom cursor.
+
+     images/cursor_click_animation_sm.png is an APNG (36 frames, loops
+     forever). CSS `cursor: url(...)` only ever renders an APNG's first
+     frame, so the animation has to live in a real <img> that follows the
+     pointer instead.
+
+     The `has-custom-cursor` class is added by JS only on a fine-pointer,
+     non-reduced-motion device — so touch devices and anyone who fails to run
+     the script keep their normal cursor.
+     ========================================================================== */
+  #custom-cursor {
+    --cursor-size: 40px; /* change this to resize */
+
+    /* Hotspot — the point of the arrow that sits exactly on the pointer.
+       Measured in SOURCE pixels of the 63x64 PNG, so these numbers stay
+       correct no matter what --cursor-size is.
+
+       The artwork is a near-equilateral triangle whose top-left vertex is at
+       source pixel (1, 0); that vertex is the tip. Nudge these two numbers to
+       move the hotspot — positive x moves the image left, positive y moves it
+       up. Add ?cursor-debug to the URL to see a crosshair at the exact spot. */
+    --cursor-hotspot-x: 0;
+    --cursor-hotspot-y: 0;
+
+    --cursor-scale: calc(var(--cursor-size) / 63);
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 120ms ease-out;
+    will-change: transform;
+  }
+
+  #custom-cursor.is-visible {
+    opacity: 1;
+  }
+
+  /* Kept for if a text field is ever added back: over one, the native
+     I-beam is more useful than a gold arrow. Costs nothing while unused. */
+  #custom-cursor.is-over-text {
+    opacity: 0;
+  }
+
+  #custom-cursor img {
+    display: block;
+    width: var(--cursor-size);
+    height: auto;
+
+    /* Shift the artwork so the hotspot lands on the pointer... */
+    margin-left: calc(var(--cursor-hotspot-x) * var(--cursor-scale) * -1);
+    margin-top: calc(var(--cursor-hotspot-y) * var(--cursor-scale) * -1);
+
+    /* ...and scale from that same point, so the hover and click states never
+       drag the tip away from where the pointer actually is. */
+    transform-origin: calc(var(--cursor-hotspot-x) * var(--cursor-scale))
+      calc(var(--cursor-hotspot-y) * var(--cursor-scale));
+
+    transition: transform 120ms ease-out, filter 120ms ease-out;
+  }
+
+  /* Calibration aid: ?cursor-debug draws a crosshair at the true pointer
+     position, so you can see whether the tip is sitting on it. */
+  #cursor-debug-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    pointer-events: none;
+    width: 15px;
+    height: 15px;
+    margin: -7px 0 0 -7px;
+    background: linear-gradient(#ff00ff 0 0) center / 15px 1px no-repeat,
+      linear-gradient(#ff00ff 0 0) center / 1px 15px no-repeat;
+  }
+
+  /* Over something clickable: grow slightly and pick up the accent glow. */
+  #custom-cursor.is-pointer img {
+    transform: scale(1.18);
+    filter: drop-shadow(0 0 6px rgba(123, 254, 106, 0.55));
+  }
+
+  /* Click feedback. */
+  #custom-cursor.is-down img {
+    transform: scale(0.82);
+  }
+
+  #custom-cursor.is-pointer.is-down img {
+    transform: scale(1);
+  }
+
+  /* Language switch in the header — styled to match .nav-link. */
+  .lang-option {
+    @apply font-mono-body text-mono-body text-outline hover:text-on-surface tracking-wider uppercase transition-colors cursor-pointer;
+  }
+
+  .lang-option.is-active {
+    @apply text-primary-container font-bold;
+  }
+}
+
+/* ==========================================================================
+   Chinese mode typography.
+
+   Latin glyphs come from the self-hosted Geist / Space Grotesk / JetBrains
+   Mono; CJK glyphs fall through to the reader's own system font (PingFang SC
+   on Apple, Microsoft YaHei on Windows) via the stacks in
+   tailwind.config.js. What changes here is the leading and tracking: Chinese
+   needs noticeably more line height than English, and the tight negative
+   letter-spacing the display type uses looks wrong on CJK.
+
+   These selectors are more specific than the utilities they override
+   (including `leading-relaxed`), so they win regardless of source order.
+   ========================================================================== */
+@layer utilities {
+  html[lang="zh-CN"] .text-body-lg {
+    line-height: 1.95;
+    letter-spacing: 0;
+  }
+
+  html[lang="zh-CN"] .text-body-sm {
+    line-height: 1.85;
+  }
+
+  /* Kept identical: headings carry both `text-headline-sm` and
+     `md:text-headline-lg`, and Tailwind emits the override for the `md:`
+     class without its media query — so differing values would apply at the
+     wrong breakpoint. */
+  html[lang="zh-CN"] .text-headline-lg,
+  html[lang="zh-CN"] .text-headline-sm {
+    line-height: 1.55;
+    letter-spacing: 0;
+  }
+
+  html[lang="zh-CN"] .text-display-lg,
+  html[lang="zh-CN"] .text-display-lg-mobile {
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  html[lang="zh-CN"] .text-mono-body {
+    line-height: 1.75;
+  }
+
+  html[lang="zh-CN"] .text-mono-display {
+    line-height: 1.6;
+  }
+
+  html[lang="zh-CN"] .text-label-caps {
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+  }
+}
+
+/* ==========================================================================
+   Hiding the native cursor.
+
+   Gated on a fine pointer so touch devices are untouched. The selectors are
+   deliberately more specific than a bare utility class, otherwise Tailwind's
+   `cursor-pointer` (emitted later in the file) would win and the OS hand
+   would show through on every link and button.
+   ========================================================================== */
+@media (hover: hover) and (pointer: fine) {
+  html.has-custom-cursor,
+  html.has-custom-cursor body,
+  html.has-custom-cursor body * {
+    cursor: none;
+  }
+
+  /* Text fields keep a real caret. Nothing on the page matches this today;
+     it's here so adding an <input> later doesn't need a CSS change too. */
+  html.has-custom-cursor body input,
+  html.has-custom-cursor body textarea,
+  html.has-custom-cursor body select {
+    cursor: auto;
+  }
+}

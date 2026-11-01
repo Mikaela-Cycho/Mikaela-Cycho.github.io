@@ -1,0 +1,14 @@
+{
+  "name": "mikaela-duan-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Personal portfolio site for Yujia (Mikaela) Duan",
+  "scripts": {
+    "build": "tailwindcss -i ./src/input.css -o ./dist/styles.css --minify",
+    "dev": "tailwindcss -i ./src/input.css -o ./dist/styles.css --watch",
+    "serve": "npx --yes http-server . -p 3000 -c-1"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}

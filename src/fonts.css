@@ -1,0 +1,99 @@
+/* ==========================================================================
+   Self-hosted fonts — no request ever leaves your domain.
+
+   The woff2 files live in /fonts/ and are committed to the project, so
+   deploying is still just "upload the folder". Paths below are relative to
+   the compiled stylesheet at /dist/styles.css, hence the `../`.
+
+   Only the weights the site actually uses are included:
+     Space Grotesk  500, 600, 700   (headings and display type)
+     Geist          400, 500, 700   (body copy)
+     JetBrains Mono 400, 500, 700   (labels, tags, the terminal bits)
+
+   Chinese text is NOT served from here. It falls through to the reader's
+   own system font — see the stacks in tailwind.config.js. A webfont with
+   full CJK coverage is several megabytes even subsetted, which is the
+   opposite of what this site needs.
+
+   No `unicode-range` is declared on purpose: these files only contain Latin
+   glyphs, so the browser already falls back per character for Chinese and
+   for the arrows and symbols (→ ▼ ▪ »). Declaring a range would add a way
+   to get that subtly wrong without changing the result.
+
+   To refresh these files, see fonts/README.md.
+   ========================================================================== */
+
+/* ---------- Space Grotesk ---------- */
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/space-grotesk-500.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/space-grotesk-600.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/space-grotesk-700.woff2") format("woff2");
+}
+
+/* ---------- Geist ---------- */
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/geist-sans-400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/geist-sans-500.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/geist-sans-700.woff2") format("woff2");
+}
+
+/* ---------- JetBrains Mono ---------- */
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/jetbrains-mono-400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/jetbrains-mono-500.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/jetbrains-mono-700.woff2") format("woff2");
+}
